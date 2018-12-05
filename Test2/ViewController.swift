@@ -14,6 +14,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     var urlImages:[UIImage] = []
     var years:[String] = []
+    let alamoGroup = DispatchGroup()
     @IBOutlet weak var urlCollectionView: UICollectionView!
     @IBOutlet weak var timer: UILabel!
     @IBOutlet weak var loading: UIActivityIndicatorView!
@@ -79,11 +80,28 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
             let urlTimeStart = NSDate()
-            var success = false
+            //var success = false
+            
             for node in doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src") {
+            
+                self.urlCall(url: "https:"+node.text!.prefix(upTo: node.text!.lastIndex(of: "/")!).replacingOccurrences(of: "/thumb", with: ""), year: String(node.text!.prefix(56).suffix(4)), retry: 3)
+            }
+            
+            // after dispatchgroup is done, execute
+            self.alamoGroup.notify(queue: .main) {
+                self.loading.isHidden = true
+                self.loading.stopAnimating()
+                self.years.sort(by: <)
+                let urlTimeFinish = NSDate()
+                self.timer.text = String(format: "%.2f", urlTimeFinish.timeIntervalSince(urlTimeStart as Date)) + " sec"
+                //print("Time ", urlTimeFinish.timeIntervalSince(urlTimeStart as Date))
+                self.urlCollectionView.reloadData()
+            }
+            
                 //print(node.text!)
-                success = false
+ /*               success = false
                 while !success {
+                    print(String(node.text!.prefix(56).suffix(4)))
                     let url = URL(string: "https:"+node.text!.prefix(upTo: node.text!.lastIndex(of: "/")!).replacingOccurrences(of: "/thumb", with: ""))
                     if let data = try? Data(contentsOf: url!) {
                         self.urlImages.append(UIImage(data: data)!)
@@ -101,7 +119,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.timer.text = String(format: "%.2f", urlTimeFinish.timeIntervalSince(urlTimeStart as Date)) + " sec"
                 //print("Time ", urlTimeFinish.timeIntervalSince(urlTimeStart as Date))
                 self.urlCollectionView.reloadData()
-            }
+            }*/
         }
         
         
@@ -109,6 +127,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
        // let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
         //print(UIImage(data: data!))
         //image.image = UIImage(data: data!)
+    }
+    
+    func urlCall(url: String, year: String, retry: Int) {
+        alamoGroup.enter()
+        
+        Alamofire.request(url, method: .get).responseData { response in
+            print(year)
+            if let error = response.error {
+                print("Error with ",year)
+                print(error)
+                if retry > 0 {
+                    self.urlCall(url: url, year: year, retry: retry - 1)
+                }
+            }
+            if let data = response.result.value {
+                self.urlImages.append(UIImage(data: data)!)
+                self.years.append(year)
+            }
+            // leave after done
+            self.alamoGroup.leave()
+        }
     }
     
     func getCOSImages(token: String) {
@@ -123,11 +162,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
             let xpath = doc.xpath("//bucket:Key", namespaces: ["bucket": "http://s3.amazonaws.com/doc/2006-03-01/"])
-            var current = 0
+ //           var current = 0
             let cosTimeStart = NSDate()
+            
             for node in xpath {
+                // add in dispatch group
+                self.alamoGroup.enter()
+            
                 Alamofire.request(url+"/"+node.text!, method: .get, headers: headers).responseData { response in
-                    current += 1
+                    print(String(node.text!.prefix(4)))
                     if let error = response.error {
                         print("Error with ",node.text!)
                         print(error)
@@ -136,18 +179,45 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                         self.urlImages.append(UIImage(data: data)!)
                         self.years.append(String(node.text!.prefix(4)))
                     }
-                    DispatchQueue.main.async {
-                        if (current == xpath.count - 1) {
-                            self.loading.isHidden = true
-                            self.loading.stopAnimating()
-                            let cosTimeFinish = NSDate()
-                            self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
-                            //print("Time ", cosTimeFinish.timeIntervalSince(cosTimeStart as Date))
-                            self.urlCollectionView.reloadData()
-                        }
-                    }
+                    // leave after done
+                    self.alamoGroup.leave()
                 }
             }
+            
+            // after dispatchgroup is done, execute
+            self.alamoGroup.notify(queue: .main) {
+                self.loading.isHidden = true
+                self.loading.stopAnimating()
+                self.years.sort(by: <)
+                let cosTimeFinish = NSDate()
+                self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
+                //print("Time ", cosTimeFinish.timeIntervalSince(cosTimeStart as Date))
+                self.urlCollectionView.reloadData()
+            }
+            
+//            for node in xpath {
+//                Alamofire.request(url+"/"+node.text!, method: .get, headers: headers).responseData { response in
+//                    current += 1
+//                    if let error = response.error {
+//                        print("Error with ",node.text!)
+//                        print(error)
+//                    }
+//                    if let data = response.result.value {
+//                        self.urlImages.append(UIImage(data: data)!)
+//                        self.years.append(String(node.text!.prefix(4)))
+//                    }
+//                    DispatchQueue.main.async {
+//                        if (current == xpath.count - 1) {
+//                            self.loading.isHidden = true
+//                            self.loading.stopAnimating()
+//                            let cosTimeFinish = NSDate()
+//                            self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
+//                            //print("Time ", cosTimeFinish.timeIntervalSince(cosTimeStart as Date))
+//                            self.urlCollectionView.reloadData()
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 
