@@ -20,11 +20,13 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
     @IBAction func getFromURLs() {
+        clear()
         getURLImages()
     }
     
     @IBAction func getFromCOS() {
-        getAccessToken()
+        clear()
+        getAccessToken(isZipped: false)
         //getCOSImages2()
     }
     
@@ -166,22 +168,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let cosTimeStart = NSDate()
             
             for node in xpath {
-                // add in dispatch group
-                self.alamoGroup.enter()
-            
-                Alamofire.request(url+"/"+node.text!, method: .get, headers: headers).responseData { response in
-                    print(String(node.text!.prefix(4)))
-                    if let error = response.error {
-                        print("Error with ",node.text!)
-                        print(error)
-                    }
-                    if let data = response.result.value {
-                        self.urlImages.append(UIImage(data: data)!)
-                        self.years.append(String(node.text!.prefix(4)))
-                    }
-                    // leave after done
-                    self.alamoGroup.leave()
-                }
+                
+                self.cosCall(url: url+"/"+node.text!, year: String(node.text!.prefix(4)), headers: headers, retry: 3)
+                
+                
             }
             
             // after dispatchgroup is done, execute
@@ -220,8 +210,29 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //            }
         }
     }
+    
+    func cosCall(url: String, year: String, headers: [String:String], retry: Int) {
+        alamoGroup.enter()
+        
+        Alamofire.request(url, method: .get, headers: headers).responseData { response in
+            print(year)
+            if let error = response.error {
+                print("Error with ",year)
+                print(error)
+                if retry > 0 {
+                    self.cosCall(url: url, year: year, headers: headers, retry: retry - 1)
+                }
+            }
+            if let data = response.result.value {
+                self.urlImages.append(UIImage(data: data)!)
+                self.years.append(year)
+            }
+            // leave after done
+            self.alamoGroup.leave()
+        }
+    }
 
-    func getAccessToken() {
+    func getAccessToken(isZipped: Bool) {
         let url = "https://iam.bluemix.net/oidc/token"
         let parameters = ["apikey": "gXwkLJrpXdHVs2PZ2HSD20PTFfV8nf1_qCk1Spzhz1Sa",
                           "response_type": "cloud_iam",
@@ -234,13 +245,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             if let json = response.result.value {
                 let jsonData:Dictionary = json as! Dictionary<String, Any>
                 DispatchQueue.main.async {
-                    self.getCOSImages(token: jsonData["access_token"]! as! String)
+                    if isZipped {
+                        self.getCOSZip(token: jsonData["access_token"]! as! String)
+                    } else {
+                        self.getCOSImages(token: jsonData["access_token"]! as! String)
+                    }
                 }
             }
         }
     }
     
-    func getCOSImages2() {
+    /*func getCOSImages2() {
         var cos = COS(apiKey: "gXwkLJrpXdHVs2PZ2HSD20PTFfV8nf1_qCk1Spzhz1Sa", ibmServiceInstanceID: "d12bbd09-2b1a-4cba-b7f2-7e61a66533b8")
         cos.listBuckets() { result in
             print(result.buckets!.first?.bucket![0].name! as! String)
@@ -251,6 +266,29 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }) { result in
             print("result")
             print(result)
+        }
+    }*/
+    
+    func getCOSZip(token: String) {
+        loading.isHidden = false
+        loading.startAnimating()
+        
+        let url = "https://s3.us-east.objectstorage.softlayer.net/atlantic-hurricanes-zip/Atlantic_hurricane_seasons_summary_map.zip"
+        let headers = ["Authorization": "Bearer " + token,
+                       "ibm-service-instance-id": "d12bbd09-2b1a-4cba-b7f2-7e61a66533b8"]
+        
+        let destination = DownloadRequest.suggestedDownloadDestination()
+
+        Alamofire.download(url, method: .get, headers: headers, to: destination).validate().responseData { response in
+            debugPrint(response)
+            //print(response.temporaryURL)
+            print(response.destinationURL)
+            print(response.destinationURL?.deletingLastPathComponent().path)
+            let fileManager = FileManager()
+            print(fileManager.fileExists(atPath: (response.destinationURL?.path)!))
+            //let x = try? fileManager.contentsOfDirectory(atPath: fileManager.currentDirectoryPath)
+            print(fileManager.changeCurrentDirectoryPath((response.destinationURL?.deletingLastPathComponent().path)!))
+            print(fileManager.currentDirectoryPath)
         }
     }
     
