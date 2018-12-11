@@ -9,32 +9,60 @@
 import UIKit
 import Alamofire
 import Kanna
+import ZIPFoundation
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var urlImages:[UIImage] = []
     var years:[String] = []
+    var currentWorkingPath = ""
     let alamoGroup = DispatchGroup()
+    
+    let apikey = "" // Get from Max Shapiro
+    let ibmServiceInstanceId = "" // Get from Max Shapiro
+    
     @IBOutlet weak var urlCollectionView: UICollectionView!
     @IBOutlet weak var timer: UILabel!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
+    // Button for URLS
     @IBAction func getFromURLs() {
         clear()
         getURLImages()
     }
     
+    // Button for COS
     @IBAction func getFromCOS() {
         clear()
         getAccessToken(isZipped: false)
         //getCOSImages2()
     }
     
+    // Button for COS that is Zipped
+    @IBAction func getFromCOSZip() {
+        clear()
+        getAccessToken(isZipped: true)
+    }
+    
+    // Clear UI and Data
     @IBAction func clear() {
         urlImages = []
         years = []
-        self.urlCollectionView.reloadData()
         timer.text = "0 sec"
+        
+        let fileManager = FileManager()
+        
+        if currentWorkingPath != "" {
+            do {
+                try fileManager.removeItem(atPath: currentWorkingPath)
+            } catch {
+                print("Error removing directory")
+            }
+        }
+        
+        currentWorkingPath = ""
+        
+        self.urlCollectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -50,11 +78,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-       // let urls = Test.getImageURLs()
-        
-      //  print(urls)
         
         loading.isHidden = true
         
@@ -67,13 +90,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.minimumLineSpacing = 10
         
         urlCollectionView.collectionViewLayout = layout
-        
-        //getURLImages()
-        
-        //getAccessToken()
 
-        }
-        
+    }
+    
+    // Gets locations of all Images on Wikipedia
     func getURLImages() {
         loading.isHidden = false
         loading.startAnimating()
@@ -82,7 +102,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
             let urlTimeStart = NSDate()
-            //var success = false
             
             for node in doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src") {
             
@@ -96,41 +115,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.years.sort(by: <)
                 let urlTimeFinish = NSDate()
                 self.timer.text = String(format: "%.2f", urlTimeFinish.timeIntervalSince(urlTimeStart as Date)) + " sec"
-                //print("Time ", urlTimeFinish.timeIntervalSince(urlTimeStart as Date))
                 self.urlCollectionView.reloadData()
             }
-            
-                //print(node.text!)
- /*               success = false
-                while !success {
-                    print(String(node.text!.prefix(56).suffix(4)))
-                    let url = URL(string: "https:"+node.text!.prefix(upTo: node.text!.lastIndex(of: "/")!).replacingOccurrences(of: "/thumb", with: ""))
-                    if let data = try? Data(contentsOf: url!) {
-                        self.urlImages.append(UIImage(data: data)!)
-                        self.years.append(String(node.text!.prefix(56).suffix(4)))
-                        success = true
-                    } else {
-                        print("Fail: ", node.text!.prefix(56).suffix(4))
-                    }
-                }
-            }
-            DispatchQueue.main.async {
-                self.loading.isHidden = true
-                self.loading.stopAnimating()
-                let urlTimeFinish = NSDate()
-                self.timer.text = String(format: "%.2f", urlTimeFinish.timeIntervalSince(urlTimeStart as Date)) + " sec"
-                //print("Time ", urlTimeFinish.timeIntervalSince(urlTimeStart as Date))
-                self.urlCollectionView.reloadData()
-            }*/
         }
-        
-        
-        //let url = URL(string: "https://upload.wikimedia.org/wikipedia/commons/1/14/2018_Atlantic_hurricane_season_summary_map.png")
-       // let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
-        //print(UIImage(data: data!))
-        //image.image = UIImage(data: data!)
     }
     
+    // Downloads an image from Wikipedia
     func urlCall(url: String, year: String, retry: Int) {
         alamoGroup.enter()
         
@@ -152,26 +142,25 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
     
+    // Gets names of all objects (images) in COS bucket
     func getCOSImages(token: String) {
         loading.isHidden = false
         loading.startAnimating()
         
         let url = "https://s3.us-east.objectstorage.softlayer.net/atlantic-hurricanes"
         let headers = ["Authorization": "Bearer " + token,
-                          "ibm-service-instance-id": ""] // Get from Max Shapiro
+                          "ibm-service-instance-id": ibmServiceInstanceId]
         
         Alamofire.request(url, method: .get, headers: headers).responseString(queue: nil, encoding: .utf8) { response in
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
             let xpath = doc.xpath("//bucket:Key", namespaces: ["bucket": "http://s3.amazonaws.com/doc/2006-03-01/"])
- //           var current = 0
             let cosTimeStart = NSDate()
             
             for node in xpath {
                 
                 self.cosCall(url: url+"/"+node.text!, year: String(node.text!.prefix(4)), headers: headers, retry: 3)
-                
-                
+           
             }
             
             // after dispatchgroup is done, execute
@@ -181,36 +170,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.years.sort(by: <)
                 let cosTimeFinish = NSDate()
                 self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
-                //print("Time ", cosTimeFinish.timeIntervalSince(cosTimeStart as Date))
                 self.urlCollectionView.reloadData()
             }
-            
-//            for node in xpath {
-//                Alamofire.request(url+"/"+node.text!, method: .get, headers: headers).responseData { response in
-//                    current += 1
-//                    if let error = response.error {
-//                        print("Error with ",node.text!)
-//                        print(error)
-//                    }
-//                    if let data = response.result.value {
-//                        self.urlImages.append(UIImage(data: data)!)
-//                        self.years.append(String(node.text!.prefix(4)))
-//                    }
-//                    DispatchQueue.main.async {
-//                        if (current == xpath.count - 1) {
-//                            self.loading.isHidden = true
-//                            self.loading.stopAnimating()
-//                            let cosTimeFinish = NSDate()
-//                            self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
-//                            //print("Time ", cosTimeFinish.timeIntervalSince(cosTimeStart as Date))
-//                            self.urlCollectionView.reloadData()
-//                        }
-//                    }
-//                }
-//            }
         }
     }
     
+    // Downloads an image from the COS bucket
     func cosCall(url: String, year: String, headers: [String:String], retry: Int) {
         alamoGroup.enter()
         
@@ -232,9 +197,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
 
+    // Gets access token needed for interacting with COS
     func getAccessToken(isZipped: Bool) {
         let url = "https://iam.bluemix.net/oidc/token"
-        let parameters = ["apikey": "", // Get from Max Shapiro
+        let parameters = ["apikey": apikey,
                           "response_type": "cloud_iam",
                           "grant_type": "urn:ibm:params:oauth:grant-type:apikey"] //-d
         let headers = ["Content-Type": "application/x-www-form-urlencoded",
@@ -256,7 +222,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     /*func getCOSImages2() {
-        var cos = COS(apiKey: "", ibmServiceInstanceID: "") // Get from Max Shapiro
+        var cos = COS(apiKey: apikey, ibmServiceInstanceID: ibmServiceInstanceId)
         cos.listBuckets() { result in
             print(result.buckets!.first?.bucket![0].name! as! String)
         }
@@ -269,29 +235,65 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }*/
     
+    // Downloads Zip file from COS bucket and decompresses file to get Images
     func getCOSZip(token: String) {
         loading.isHidden = false
         loading.startAnimating()
         
         let url = "https://s3.us-east.objectstorage.softlayer.net/atlantic-hurricanes-zip/Atlantic_hurricane_seasons_summary_map.zip"
         let headers = ["Authorization": "Bearer " + token,
-                       "ibm-service-instance-id": ""] // Get from Max Shapiro
+                       "ibm-service-instance-id": ibmServiceInstanceId]
         
-        let destination = DownloadRequest.suggestedDownloadDestination()
+        let fileURL: URL = URL(string: "file://" + NSHomeDirectory() + "/Temp/hurricanes.zip")!
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+            return (fileURL, [.createIntermediateDirectories, .removePreviousFile])
+        }
+        
+        let cosTimeStart = NSDate()
 
+        alamoGroup.enter()
+        
         Alamofire.download(url, method: .get, headers: headers, to: destination).validate().responseData { response in
             debugPrint(response)
-            //print(response.temporaryURL)
-            print(response.destinationURL)
-            print(response.destinationURL?.deletingLastPathComponent().path)
+            
             let fileManager = FileManager()
-            print(fileManager.fileExists(atPath: (response.destinationURL?.path)!))
-            //let x = try? fileManager.contentsOfDirectory(atPath: fileManager.currentDirectoryPath)
-            print(fileManager.changeCurrentDirectoryPath((response.destinationURL?.deletingLastPathComponent().path)!))
-            print(fileManager.currentDirectoryPath)
+            self.currentWorkingPath = (response.destinationURL?.deletingLastPathComponent().path)!
+            
+            var sourceURL = URL(fileURLWithPath: self.currentWorkingPath)
+            sourceURL.appendPathComponent("hurricanes.zip")
+            
+            var destinationURL = URL(fileURLWithPath: self.currentWorkingPath)
+            destinationURL.appendPathComponent("hurricanes")
+            
+            do {
+                try fileManager.createDirectory(at: destinationURL, withIntermediateDirectories: true, attributes: nil)
+                try fileManager.unzipItem(at: sourceURL, to: destinationURL)
+            } catch {
+                print("Extraction of ZIP archive failed with error:\(error)")
+            }
+            
+            do {
+                let destinationFiles = try fileManager.contentsOfDirectory(atPath: destinationURL.path)
+                for destinationFile in destinationFiles {
+                    if destinationFile.suffix(3) == "png" {
+                        self.years.append(String(destinationFile.prefix(4)))
+                        self.urlImages.append(UIImage(contentsOfFile: destinationURL.path + "/" + destinationFile)!)
+                    }
+                }
+            } catch {
+                print("Directory does not exist")
+            }
+            
+            self.alamoGroup.leave()
+            
+        }
+        self.alamoGroup.notify(queue: .main) {
+            self.loading.isHidden = true
+            self.loading.stopAnimating()
+            self.years.sort(by: <)
+            let cosTimeFinish = NSDate()
+            self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
+            self.urlCollectionView.reloadData()
         }
     }
-    
-
 }
-

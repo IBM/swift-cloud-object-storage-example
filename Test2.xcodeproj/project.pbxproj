@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A002DC6521BB03BB0067160D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A002DC6421BB03BB0067160D /* AppDelegate.swift */; };
+		A002DC7021BEC0720067160D /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A002DC6F21BEC0720067160D /* ZIPFoundation.framework */; };
+		A002DC7121BEC0810067160D /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A002DC6F21BEC0720067160D /* ZIPFoundation.framework */; };
+		A002DC7221BEC0810067160D /* ZIPFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A002DC6F21BEC0720067160D /* ZIPFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A02E2F2621825AB200068C37 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02E2F2521825AB200068C37 /* ViewController.swift */; };
 		A02E2F2921825AB200068C37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A02E2F2721825AB200068C37 /* Main.storyboard */; };
 		A02E2F2B21825AB300068C37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A02E2F2A21825AB300068C37 /* Assets.xcassets */; };
@@ -29,6 +32,7 @@
 			files = (
 				A02E2F3F2190913400068C37 /* Kanna.framework in Embed Frameworks */,
 				A02E2F3B21825F9900068C37 /* Alamofire.framework in Embed Frameworks */,
+				A002DC7221BEC0810067160D /* ZIPFoundation.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -37,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		A002DC6421BB03BB0067160D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A002DC6F21BEC0720067160D /* ZIPFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZIPFoundation.framework; path = Carthage/Build/iOS/ZIPFoundation.framework; sourceTree = "<group>"; };
 		A02E2F2021825AB200068C37 /* Test2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A02E2F2521825AB200068C37 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A02E2F2821825AB200068C37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -54,8 +59,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A02E2F3921825EA600068C37 /* Alamofire.framework in Frameworks */,
+				A002DC7021BEC0720067160D /* ZIPFoundation.framework in Frameworks */,
 				A02E2F3A21825F9900068C37 /* Alamofire.framework in Frameworks */,
 				A02E2F3E2190913400068C37 /* Kanna.framework in Frameworks */,
+				A002DC7121BEC0810067160D /* ZIPFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,7 @@
 		A02E2F1721825AB200068C37 = {
 			isa = PBXGroup;
 			children = (
+				A002DC6F21BEC0720067160D /* ZIPFoundation.framework */,
 				A02E2F3D2190913400068C37 /* Kanna.framework */,
 				A02E2F2221825AB200068C37 /* Test2 */,
 				A02E2F2121825AB200068C37 /* Products */,
