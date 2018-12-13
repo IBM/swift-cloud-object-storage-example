@@ -90,32 +90,34 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.minimumLineSpacing = 10
         
         urlCollectionView.collectionViewLayout = layout
-
+        
     }
     
     // Gets locations of all Images on Wikipedia
     func getURLImages() {
         loading.isHidden = false
         loading.startAnimating()
-        
-        Alamofire.request("https://en.wikipedia.org/wiki/Atlantic_hurricane_season").responseString(queue: nil, encoding: .utf8) { response in
-            let html = response.result.value
-            let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
-            let urlTimeStart = NSDate()
-            
-            for node in doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src") {
-            
-                self.urlCall(url: "https:"+node.text!.prefix(upTo: node.text!.lastIndex(of: "/")!).replacingOccurrences(of: "/thumb", with: ""), year: String(node.text!.prefix(56).suffix(4)), retry: 3)
-            }
-            
-            // after dispatchgroup is done, execute
-            self.alamoGroup.notify(queue: .main) {
-                self.loading.isHidden = true
-                self.loading.stopAnimating()
-                self.years.sort(by: <)
-                let urlTimeFinish = NSDate()
-                self.timer.text = String(format: "%.2f", urlTimeFinish.timeIntervalSince(urlTimeStart as Date)) + " sec"
-                self.urlCollectionView.reloadData()
+        DispatchQueue.global(qos: .background).async {
+            Alamofire.request("https://en.wikipedia.org/wiki/Atlantic_hurricane_season").responseString(queue: nil, encoding: .utf8) { response in
+                let html = response.result.value
+                let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
+                let urlTimeStart = NSDate()
+                
+                DispatchQueue.global(qos: .background).async {
+                    for node in doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src") {
+                        
+                        self.urlCall(url: "https:"+node.text!.prefix(upTo: node.text!.lastIndex(of: "/")!).replacingOccurrences(of: "/thumb", with: ""), year: String(node.text!.prefix(56).suffix(4)), retry: 3)
+                    }
+                }
+                // after dispatchgroup is done, execute
+                self.alamoGroup.notify(queue: .main) {
+                    self.loading.isHidden = true
+                    self.loading.stopAnimating()
+                    self.years.sort(by: <)
+                    let urlTimeFinish = NSDate()
+                    self.timer.text = String(format: "%.2f", urlTimeFinish.timeIntervalSince(urlTimeStart as Date)) + " sec"
+                    self.urlCollectionView.reloadData()
+                }
             }
         }
     }
@@ -126,19 +128,22 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         Alamofire.request(url, method: .get).responseData { response in
             print(year)
-            if let error = response.error {
-                print("Error with ",year)
-                print(error)
-                if retry > 0 {
-                    self.urlCall(url: url, year: year, retry: retry - 1)
+            DispatchQueue.global(qos: .background).async {
+                
+                if let error = response.error {
+                    print("Error with ",year)
+                    print(error)
+                    if retry > 0 {
+                        self.urlCall(url: url, year: year, retry: retry - 1)
+                    }
                 }
+                if let data = response.result.value {
+                    self.urlImages.append(UIImage(data: data)!)
+                    self.years.append(year)
+                }
+                // leave after done
+                self.alamoGroup.leave()
             }
-            if let data = response.result.value {
-                self.urlImages.append(UIImage(data: data)!)
-                self.years.append(year)
-            }
-            // leave after done
-            self.alamoGroup.leave()
         }
     }
     
@@ -149,7 +154,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         let url = "https://s3.us-east.objectstorage.softlayer.net/atlantic-hurricanes"
         let headers = ["Authorization": "Bearer " + token,
-                          "ibm-service-instance-id": ibmServiceInstanceId]
+                       "ibm-service-instance-id": ibmServiceInstanceId]
         
         Alamofire.request(url, method: .get, headers: headers).responseString(queue: nil, encoding: .utf8) { response in
             let html = response.result.value
@@ -160,7 +165,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             for node in xpath {
                 
                 self.cosCall(url: url+"/"+node.text!, year: String(node.text!.prefix(4)), headers: headers, retry: 3)
-           
+                
             }
             
             // after dispatchgroup is done, execute
@@ -196,7 +201,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             self.alamoGroup.leave()
         }
     }
-
+    
     // Gets access token needed for interacting with COS
     func getAccessToken(isZipped: Bool) {
         let url = "https://iam.bluemix.net/oidc/token"
@@ -205,7 +210,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                           "grant_type": "urn:ibm:params:oauth:grant-type:apikey"] //-d
         let headers = ["Content-Type": "application/x-www-form-urlencoded",
                        "Accept": "application/json"] //-H
-
+        
         Alamofire.request(url, method: .post, parameters: parameters, headers: headers).responseJSON { response in
             
             if let json = response.result.value {
@@ -222,18 +227,18 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     /*func getCOSImages2() {
-        var cos = COS(apiKey: apikey, ibmServiceInstanceID: ibmServiceInstanceId)
-        cos.listBuckets() { result in
-            print(result.buckets!.first?.bucket![0].name! as! String)
-        }
-        cos.listObjects(bucketName: "atlantic-hurricanes", failure: { error in
-            print("Error")
-            print(error)
-        }) { result in
-            print("result")
-            print(result)
-        }
-    }*/
+     var cos = COS(apiKey: apikey, ibmServiceInstanceID: ibmServiceInstanceId)
+     cos.listBuckets() { result in
+     print(result.buckets!.first?.bucket![0].name! as! String)
+     }
+     cos.listObjects(bucketName: "atlantic-hurricanes", failure: { error in
+     print("Error")
+     print(error)
+     }) { result in
+     print("result")
+     print(result)
+     }
+     }*/
     
     // Downloads Zip file from COS bucket and decompresses file to get Images
     func getCOSZip(token: String) {
@@ -250,7 +255,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
         
         let cosTimeStart = NSDate()
-
+        
         alamoGroup.enter()
         
         Alamofire.download(url, method: .get, headers: headers, to: destination).validate().responseData { response in
@@ -297,3 +302,4 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
 }
+
