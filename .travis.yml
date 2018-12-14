@@ -2,7 +2,7 @@
 os: osx
 osx_image: xcode10
 language: swift
-xcode_project: Test2.xcode_proj
+xcode_project: Test2.xcodeproj
 xcode_scheme: Test2
 xcode_destination: platform=iOS Simulator,OS=12.0,name=iPhone XR
 podfile: Podfile
