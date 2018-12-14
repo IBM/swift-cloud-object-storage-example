@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/IBM/swift-cloud-object-storage-example.svg?branch=master)](https://travis-ci.com/IBM/swift-cloud-object-storage-example)
+
 # About Code Pattern
 In this Code Pattern, we will look at comparing downloading Atlantic Hurricane Season images from a traditional server ([Wikipedia](https://en.wikipedia.org/wiki/Atlantic_hurricane_season ) in this case) and Cloud Object Storage.
 
