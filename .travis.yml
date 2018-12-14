@@ -2,7 +2,5 @@
 os: osx
 osx_image: xcode10
 language: swift
-xcode_project: Test2.xcodeproj
-xcode_scheme: Test2
-xcode_destination: platform=iOS Simulator,OS=12.0,name=iPhone XR
 podfile: Podfile
+script: xcodebuild clean build -workspace Test2.xcworkspace -scheme "Test2" -sdk iphonesimulator -destination "platform=iOS Simulator,OS=12.0,name=iPhone XR" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO
