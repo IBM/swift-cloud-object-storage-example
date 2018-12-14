@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import Kanna
 import ZIPFoundation
+import SwiftyPlistManager
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -18,8 +19,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var currentWorkingPath = ""
     let alamoGroup = DispatchGroup()
     
-    let apikey = "" // Get from Max Shapiro
-    let ibmServiceInstanceId = "" // Get from Max Shapiro
+    var apikey = ""
+    var ibmServiceInstanceId = ""
     
     @IBOutlet weak var urlCollectionView: UICollectionView!
     @IBOutlet weak var timer: UILabel!
@@ -90,6 +91,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.minimumLineSpacing = 10
         
         urlCollectionView.collectionViewLayout = layout
+        
+        SwiftyPlistManager.shared.start(plistNames: ["Data"], logging: true)
+        
+        apikey = SwiftyPlistManager.shared.fetchValue(for: "apikey", fromPlistWithName: "Data") as! String
+        ibmServiceInstanceId = SwiftyPlistManager.shared.fetchValue(for: "ibmServiceInstanceId", fromPlistWithName: "Data") as! String
 
     }
     

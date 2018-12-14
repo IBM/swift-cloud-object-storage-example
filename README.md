@@ -3,10 +3,18 @@ In this Code Pattern, we will look at comparing downloading Atlantic Hurricane S
 
 # Steps for Setting up Environment
 
+## Carthage
+
 1. Run `brew install carthage` if you do not have Carthage already
-2. Run `carthage update` in the direcotry where the Cartfile is located
-3. Open the Xcode project and copy the 	`Alamofire`, `Kanna`, and `ZIPFoundation` framework files from `Carthage/Build/iOS` to the Xcode project. (Can be done by clicking and dragging them into the Xcode project navigator)
-4. Contact Max Shapiro on Slack or email for API Key and IBM Service Instance ID to include in the code on lines 21 & 22
+2. Run `carthage update --platform iOS` in the directory where the Cartfile is located
+3. Contact Max Shapiro on Slack or email for API Key and IBM Service Instance ID to include in a `Data.plist` file
+4. Build and run the app on the simulator
+
+## CocoaPods 
+
+1. Run `sudo gem install cocoapods` if you do not have CocoaPods already
+2. Run `pod install` in the directory where the Podfile is located
+3. Contact Max Shapiro on Slack or email for API Key and IBM Service Instance ID to include in a `Data.plist` file
 4. Build and run the app on the simulator
 
 # Notes about Interacting with the App
