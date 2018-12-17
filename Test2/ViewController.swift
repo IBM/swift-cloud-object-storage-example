@@ -19,11 +19,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var currentWorkingPath = ""
     let alamoGroup = DispatchGroup()
     
+    var time: Int = 0
+    var timer = Timer()
+    
     var apikey = ""
     var ibmServiceInstanceId = ""
     
     @IBOutlet weak var urlCollectionView: UICollectionView!
-    @IBOutlet weak var timer: UILabel!
+    @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
     // Button for URLS
@@ -49,7 +52,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @IBAction func clear() {
         urlImages = []
         years = []
-        timer.text = "0 sec"
+        timer.invalidate()
+        time = 0
+        updateTimerUI()
         
         let fileManager = FileManager()
         
@@ -99,6 +104,18 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
     }
     
+    @objc private func timerUpdate() {
+        time += 1
+        updateTimerUI()
+    }
+    
+    private func updateTimerUI() {
+        let seconds: Int = (time/60)
+        let milliseconds: Int = time % 60
+        
+        timerLabel.text = "\(seconds).\(milliseconds) sec"
+    }
+    
     // Gets locations of all Images on Wikipedia
     func getURLImages() {
         loading.isHidden = false
@@ -107,7 +124,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         Alamofire.request("https://en.wikipedia.org/wiki/Atlantic_hurricane_season").responseString(queue: nil, encoding: .utf8) { response in
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
-            let urlTimeStart = NSDate()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
             
             for node in doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src") {
             
@@ -119,8 +136,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.loading.isHidden = true
                 self.loading.stopAnimating()
                 self.years.sort(by: <)
-                let urlTimeFinish = NSDate()
-                self.timer.text = String(format: "%.2f", urlTimeFinish.timeIntervalSince(urlTimeStart as Date)) + " sec"
+                self.timer.invalidate()
                 self.urlCollectionView.reloadData()
             }
         }
@@ -161,7 +177,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
             let xpath = doc.xpath("//bucket:Key", namespaces: ["bucket": "http://s3.amazonaws.com/doc/2006-03-01/"])
-            let cosTimeStart = NSDate()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
             
             for node in xpath {
                 
@@ -174,8 +190,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.loading.isHidden = true
                 self.loading.stopAnimating()
                 self.years.sort(by: <)
-                let cosTimeFinish = NSDate()
-                self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
+                self.timer.invalidate()
                 self.urlCollectionView.reloadData()
             }
         }
@@ -255,7 +270,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             return (fileURL, [.createIntermediateDirectories, .removePreviousFile])
         }
         
-        let cosTimeStart = NSDate()
+        timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
 
         alamoGroup.enter()
         
@@ -297,8 +312,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             self.loading.isHidden = true
             self.loading.stopAnimating()
             self.years.sort(by: <)
-            let cosTimeFinish = NSDate()
-            self.timer.text = String(format: "%.2f", cosTimeFinish.timeIntervalSince(cosTimeStart as Date)) + " sec"
+            self.timer.invalidate()
             self.urlCollectionView.reloadData()
         }
     }
