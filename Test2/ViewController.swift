@@ -18,6 +18,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var years:[String] = []
     var currentWorkingPath = ""
     let alamoGroup = DispatchGroup()
+    var totalImages = 0
     
     var time: Int = 0
     var timer = Timer()
@@ -28,30 +29,50 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @IBOutlet weak var urlCollectionView: UICollectionView!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var loading: UIActivityIndicatorView!
+    @IBOutlet weak var progressBar: UIProgressView!
+    
     
     // Button for URLS
+    @IBOutlet weak var urlButton: UIButton!
     @IBAction func getFromURLs() {
         clear()
+        clearButton.isEnabled = false
+        urlButton.isEnabled = false
+        cosButton.isEnabled = false
+        cosZipButton.isEnabled = false
         getURLImages()
     }
     
     // Button for COS
+    @IBOutlet weak var cosButton: UIButton!
     @IBAction func getFromCOS() {
         clear()
+        clearButton.isEnabled = false
+        urlButton.isEnabled = false
+        cosButton.isEnabled = false
+        cosZipButton.isEnabled = false
         getAccessToken(isZipped: false)
         //getCOSImages2()
     }
     
     // Button for COS that is Zipped
+    @IBOutlet weak var cosZipButton: UIButton!
     @IBAction func getFromCOSZip() {
         clear()
+        clearButton.isEnabled = false
+        urlButton.isEnabled = false
+        cosButton.isEnabled = false
+        cosZipButton.isEnabled = false
         getAccessToken(isZipped: true)
     }
     
     // Clear UI and Data
+    @IBOutlet weak var clearButton: UIButton!
     @IBAction func clear() {
         urlImages = []
         years = []
+        totalImages = 0
+        progressBar.setProgress(0.0, animated: false)
         timer.invalidate()
         time = 0
         updateTimerUI()
@@ -86,6 +107,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         super.viewDidLoad()
         
         loading.isHidden = true
+        progressBar.isHidden = true
         
         let itemSize = UIScreen.main.bounds.width/3 - 10
         
@@ -110,7 +132,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     private func updateTimerUI() {
-        let seconds: Int = (time/60)
+        let seconds: Int = (time/100)
         let milliseconds: Int = time % 60
         
         timerLabel.text = "\(seconds).\(milliseconds) sec"
@@ -124,9 +146,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         Alamofire.request("https://en.wikipedia.org/wiki/Atlantic_hurricane_season").responseString(queue: nil, encoding: .utf8) { response in
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
+            
+            let xpath = doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src")
+            
+            self.totalImages = xpath.count
+            self.progressBar.isHidden = false
+            
             self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
             
-            for node in doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src") {
+            for node in xpath {
             
                 self.urlCall(url: "https:"+node.text!.prefix(upTo: node.text!.lastIndex(of: "/")!).replacingOccurrences(of: "/thumb", with: ""), year: String(node.text!.prefix(56).suffix(4)), retry: 3)
             }
@@ -135,9 +163,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             self.alamoGroup.notify(queue: .main) {
                 self.loading.isHidden = true
                 self.loading.stopAnimating()
+                self.progressBar.isHidden = true
                 self.years.sort(by: <)
                 self.timer.invalidate()
                 self.urlCollectionView.reloadData()
+                self.clearButton.isEnabled = true
+                self.urlButton.isEnabled = true
+                self.cosButton.isEnabled = true
+                self.cosZipButton.isEnabled = true
             }
         }
     }
@@ -158,6 +191,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             if let data = response.result.value {
                 self.urlImages.append(UIImage(data: data)!)
                 self.years.append(year)
+                self.progressBar.setProgress(Float(self.urlImages.count) / Float(self.totalImages), animated: true)
             }
             // leave after done
             self.alamoGroup.leave()
@@ -177,6 +211,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let html = response.result.value
             let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
             let xpath = doc.xpath("//bucket:Key", namespaces: ["bucket": "http://s3.amazonaws.com/doc/2006-03-01/"])
+            
+            self.totalImages = xpath.count
+            self.progressBar.isHidden = false
+            
             self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
             
             for node in xpath {
@@ -189,9 +227,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             self.alamoGroup.notify(queue: .main) {
                 self.loading.isHidden = true
                 self.loading.stopAnimating()
+                self.progressBar.isHidden = true
                 self.years.sort(by: <)
                 self.timer.invalidate()
                 self.urlCollectionView.reloadData()
+                self.clearButton.isEnabled = true
+                self.urlButton.isEnabled = true
+                self.cosButton.isEnabled = true
+                self.cosZipButton.isEnabled = true
             }
         }
     }
@@ -212,6 +255,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             if let data = response.result.value {
                 self.urlImages.append(UIImage(data: data)!)
                 self.years.append(year)
+                self.progressBar.setProgress(Float(self.urlImages.count) / Float(self.totalImages), animated: true)
             }
             // leave after done
             self.alamoGroup.leave()
@@ -270,11 +314,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             return (fileURL, [.createIntermediateDirectories, .removePreviousFile])
         }
         
+        self.progressBar.isHidden = false
+        
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
 
         alamoGroup.enter()
         
-        Alamofire.download(url, method: .get, headers: headers, to: destination).validate().responseData { response in
+        Alamofire.download(url, method: .get, headers: headers, to: destination)
+            .downloadProgress(closure: { progress in
+                self.progressBar.setProgress(Float(progress.fractionCompleted), animated: true)
+            })
+            .validate().responseData { response in
             debugPrint(response)
             
             let fileManager = FileManager()
@@ -311,9 +361,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         self.alamoGroup.notify(queue: .main) {
             self.loading.isHidden = true
             self.loading.stopAnimating()
+            self.progressBar.isHidden = true
             self.years.sort(by: <)
             self.timer.invalidate()
             self.urlCollectionView.reloadData()
+            self.clearButton.isEnabled = true
+            self.urlButton.isEnabled = true
+            self.cosButton.isEnabled = true
+            self.cosZipButton.isEnabled = true
         }
     }
 }

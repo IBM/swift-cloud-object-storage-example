@@ -120,6 +120,10 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cF7-Oa-kFD">
+                                <rect key="frame" x="20" y="778" width="374" height="3"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -154,14 +158,19 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="clearButton" destination="d8a-8h-VsE" id="LZn-GV-eR8"/>
+                        <outlet property="cosButton" destination="36I-kg-yiV" id="VPx-fb-oww"/>
+                        <outlet property="cosZipButton" destination="U9L-OI-WSF" id="TlA-LU-bdZ"/>
                         <outlet property="loading" destination="1Qv-Fw-bCn" id="uip-lU-ix1"/>
+                        <outlet property="progressBar" destination="cF7-Oa-kFD" id="1A7-ht-Oza"/>
                         <outlet property="timerLabel" destination="vZI-Ri-Tfz" id="vjs-L0-bcb"/>
+                        <outlet property="urlButton" destination="Wt4-35-Asx" id="Wnb-63-YRP"/>
                         <outlet property="urlCollectionView" destination="jel-0s-Lfa" id="nem-yT-SMU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53.600000000000001" y="26.53673163418291"/>
+            <point key="canvasLocation" x="52.173913043478265" y="26.116071428571427"/>
         </scene>
     </scenes>
 </document>
