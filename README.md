@@ -1,27 +1,84 @@
 [![Build Status](https://travis-ci.com/IBM/swift-cloud-object-storage-example.svg?branch=master)](https://travis-ci.com/IBM/swift-cloud-object-storage-example)
+[![Platform](https://img.shields.io/badge/platform-ios_swift-lightgrey.svg?style=flat)](https://developer.apple.com/swift/)
 
-# About Code Pattern
-In this Code Pattern, we will look at comparing downloading Atlantic Hurricane Season images from a traditional server ([Wikipedia](https://en.wikipedia.org/wiki/Atlantic_hurricane_season ) in this case) and Cloud Object Storage.
+# Image Downloader
+In this Code Pattern, we will look at comparing downloading Atlantic Hurricane Season images from a traditional server ([Wikipedia](https://en.wikipedia.org/wiki/Atlantic_hurricane_season ) in this case) and Cloud Object Storage on an iPhone.
 
-# Steps for Setting up Environment
+When the reader has completed this Code Pattern, they will understand how to:
 
-## Carthage
+* Create an iOS Swift application
+* Incorporate Cloud Object Storage into a Swift application
 
-1. Run `brew install carthage` if you do not have Carthage already
-2. Run `carthage update --platform iOS` in the directory where the Cartfile is located
-3. Contact Max Shapiro on Slack or email for API Key and IBM Service Instance ID to include in a `Data.plist` file
-4. Build and run the app on the simulator
+# Architecture
 
-## CocoaPods 
+TODO
 
-1. Run `sudo gem install cocoapods` if you do not have CocoaPods already
-2. Run `pod install` in the directory where the Podfile is located
-3. Contact Max Shapiro on Slack or email for API Key and IBM Service Instance ID to include in a `Data.plist` file
-4. Build and run the app on the simulator
+# Steps
 
-# Notes about Interacting with the App
+1. [Install developer tools](#1-install-developer-tools)
+2. [Install dependencies](#2-install-dependencies)
+3. [Create Cloud Object Storage Buckets](#3-create-cloud-object-storage-buckets)
+4. [Run in Xcode](#4-run-in-xcode)
+
+## 1. Install developer tools
+
+Ensure you have the [required developer tools installed from Apple](https://developer.apple.com/download/):
+
+* iOS 12.0+
+* Xcode 10.0+
+* Swift 4.0+
+
+## 2. Install dependencies
+
+This pattern uses Alamofire, Kanna, ZIPFoundation, and SwiftyPlistManager which use [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
+
+You can install CocoaPods using the following command:
+
+```
+sudo gem install cocoapods
+```
+
+If the CocoaPods repository is not configured, run the following command (this may take a long time depending on your network connection and installation state):
+
+```
+pod setup
+```
+
+A pre-configured `Podfile` has been included in this repository. To download and install the required dependencies, run the following command from your project directory:
+
+```
+pod install
+```
+
+If you run into any issues during the pod install, it is recommended to run a pod update by using the following commands:
+
+```
+pod update
+```
+
+```
+pod install
+```
+
+Finally, open the Xcode workspace: `Test2.xcworkspace`.
+
+## 3. Create Cloud Object Storage Buckets
+
+TODO
+
+## 4. Run in Xcode
+
+In Xcode, click **Product** > **Run** to start the iOS application.
+
+### Notes about Interacting with the App
 * Pressing the `URL` button will start the downloading of images from a traditional server. In this case that is Wikipedia.
 * Pressing the `COS No Zip` button will start the downloading of images from Cloud Object Storage
 * Pressing the `COS Zip` button will start the downloading of the zip file containing the images from Cloud Object Storage
 * Pressing the Clear button will clear the images that have been downloaded.
 > NOTE: You must wait for one test to finish downloading and displaying the images before beginning another test. Info about the progress of downloads can be found in the console.
+
+# License
+
+This code pattern is licensed under the Apache License, Version 2. Separate third-party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1](https://developercertificate.org/) and the [Apache License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
+
+[Apache License FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
