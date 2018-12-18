@@ -25,6 +25,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     var apikey = ""
     var ibmServiceInstanceId = ""
+    var cosPublicEndpoint = ""
+    var cosBucket = ""
+    var cosZipBucket = ""
     
     @IBOutlet weak var urlCollectionView: UICollectionView!
     @IBOutlet weak var timerLabel: UILabel!
@@ -123,6 +126,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         apikey = SwiftyPlistManager.shared.fetchValue(for: "apikey", fromPlistWithName: "Data") as! String
         ibmServiceInstanceId = SwiftyPlistManager.shared.fetchValue(for: "ibmServiceInstanceId", fromPlistWithName: "Data") as! String
+        cosPublicEndpoint = SwiftyPlistManager.shared.fetchValue(for: "cosPublicEndpoint", fromPlistWithName: "Data") as! String
+        cosBucket = SwiftyPlistManager.shared.fetchValue(for: "cosBucket", fromPlistWithName: "Data") as! String
+        cosZipBucket = SwiftyPlistManager.shared.fetchValue(for: "cosZipBucket", fromPlistWithName: "Data") as! String
 
     }
     
@@ -203,7 +209,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         loading.isHidden = false
         loading.startAnimating()
         
-        let url = "https://s3.us-east.objectstorage.softlayer.net/atlantic-hurricanes"
+        let url = cosPublicEndpoint + "/" + cosBucket
         let headers = ["Authorization": "Bearer " + token,
                           "ibm-service-instance-id": ibmServiceInstanceId]
         
@@ -305,7 +311,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         loading.isHidden = false
         loading.startAnimating()
         
-        let url = "https://s3.us-east.objectstorage.softlayer.net/atlantic-hurricanes-zip/Atlantic_hurricane_seasons_summary_map.zip"
+        let url = cosPublicEndpoint + "/" + cosZipBucket + "/Atlantic_hurricane_seasons_summary_map.zip"
         let headers = ["Authorization": "Bearer " + token,
                        "ibm-service-instance-id": ibmServiceInstanceId]
         

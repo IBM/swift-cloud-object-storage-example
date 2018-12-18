@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>cosZipBucket</key>
+	<string></string>
+	<key>cosBucket</key>
+	<string></string>
+	<key>cosPublicEndpoint</key>
+	<string></string>
 	<key>ibmServiceInstanceId</key>
 	<string></string>
 	<key>apikey</key>

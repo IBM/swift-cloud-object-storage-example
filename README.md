@@ -30,7 +30,7 @@ Ensure you have the [required developer tools installed from Apple](https://deve
 
 ## 2. Install dependencies
 
-This pattern uses Alamofire, Kanna, ZIPFoundation, and SwiftyPlistManager which use [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
+This pattern uses [Alamofire](https://github.com/Alamofire/Alamofire), [Kanna](https://github.com/tid-kijyun/Kanna), [ZIPFoundation](https://github.com/weichsel/ZIPFoundation), and [SwiftyPlistManager](https://github.com/rebeloper/SwiftyPlistManager) which all work with [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
 
 You can install CocoaPods using the following command:
 
@@ -64,7 +64,10 @@ Finally, open the Xcode workspace: `Test2.xcworkspace`.
 
 ## 3. Create Cloud Object Storage Buckets
 
-TODO
+1. Provision the [IBM Cloud Object Storage Service] and follow the set of instructions for creating a Bucket.
+2. Upload the images in `atlantic_hurricane_seasons/images` to a Bucket. Then upload the zip file in `atlantic_hurrincane_seasons/zip` to a different Bucket.
+3. Follow these [instructions](https://console.bluemix.net/docs/services/cloud-object-storage/cli/curl.html#request-an-iam-token-using-an-api-key) for obtaining an API key and `ibm-service-instance-id`
+4. Include the public endpoint, Bucket names, API key, and `ibm-service-instance-id` in `Data.plist`
 
 ## 4. Run in Xcode
 
@@ -75,7 +78,6 @@ In Xcode, click **Product** > **Run** to start the iOS application.
 * Pressing the `COS No Zip` button will start the downloading of images from Cloud Object Storage
 * Pressing the `COS Zip` button will start the downloading of the zip file containing the images from Cloud Object Storage
 * Pressing the Clear button will clear the images that have been downloaded.
-> NOTE: You must wait for one test to finish downloading and displaying the images before beginning another test. Info about the progress of downloads can be found in the console.
 
 # License
 
