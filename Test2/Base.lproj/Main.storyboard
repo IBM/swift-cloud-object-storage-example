@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Z07-LG-2vX">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -9,16 +9,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Atlantic Hurricane Seasons-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Test2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ImageViewController" customModule="Test2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jel-0s-Lfa">
-                                <rect key="frame" x="0.0" y="44" width="414" height="737"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oKp-8t-cpD">
                                     <size key="itemSize" width="75" height="75"/>
@@ -77,100 +77,137 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="O74-3J-5qW"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8a-8h-VsE">
-                                <rect key="frame" x="0.0" y="789" width="63" height="73"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="63" id="QlE-So-TWv"/>
-                                </constraints>
-                                <state key="normal" title="Clear"/>
-                                <connections>
-                                    <action selector="clear" destination="BYZ-38-t0r" eventType="touchUpInside" id="CzA-yV-vc4"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wt4-35-Asx">
-                                <rect key="frame" x="71" y="789" width="63" height="73"/>
-                                <state key="normal" title="URL"/>
-                                <connections>
-                                    <action selector="getFromURLs" destination="BYZ-38-t0r" eventType="touchUpInside" id="RLe-AH-MGY"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="36I-kg-yiV">
-                                <rect key="frame" x="130" y="789" width="83" height="73"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="83" id="xix-ih-5h8"/>
-                                </constraints>
-                                <state key="normal" title="COS No Zip"/>
-                                <connections>
-                                    <action selector="getFromCOS" destination="BYZ-38-t0r" eventType="touchUpInside" id="5HK-nO-Ybr"/>
-                                </connections>
-                            </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1Qv-Fw-bCn">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
-                            </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U9L-OI-WSF">
-                                <rect key="frame" x="221" y="789" width="63" height="73"/>
-                                <state key="normal" title="COS Zip"/>
-                                <connections>
-                                    <action selector="getFromCOSZip" destination="BYZ-38-t0r" eventType="touchUpInside" id="IxS-1a-UjH"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0 sec" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vZI-Ri-Tfz">
-                                <rect key="frame" x="292" y="789" width="122" height="73"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cF7-Oa-kFD">
-                                <rect key="frame" x="20" y="778" width="374" height="3"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </progressView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="leading" secondItem="Wt4-35-Asx" secondAttribute="trailing" constant="-4" id="1vs-Pm-XbV"/>
                             <constraint firstItem="jel-0s-Lfa" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2mZ-Xa-BTE"/>
-                            <constraint firstItem="d8a-8h-VsE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5gS-EV-qHE"/>
-                            <constraint firstItem="vZI-Ri-Tfz" firstAttribute="leading" secondItem="36I-kg-yiV" secondAttribute="trailing" constant="79" id="7aA-OZ-iSH"/>
-                            <constraint firstItem="jel-0s-Lfa" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-81" id="7e1-wn-emj"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="firstBaseline" secondItem="Wt4-35-Asx" secondAttribute="baseline" id="BdS-Ac-ooE"/>
-                            <constraint firstItem="d8a-8h-VsE" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Bdk-44-QXt"/>
-                            <constraint firstItem="Wt4-35-Asx" firstAttribute="leading" secondItem="d8a-8h-VsE" secondAttribute="trailing" constant="8" id="HfY-bu-JK3"/>
-                            <constraint firstItem="vZI-Ri-Tfz" firstAttribute="leading" secondItem="U9L-OI-WSF" secondAttribute="trailing" constant="8" symbolic="YES" id="MJu-q7-dmB"/>
+                            <constraint firstItem="jel-0s-Lfa" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="7cx-Zf-GDJ"/>
                             <constraint firstItem="jel-0s-Lfa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OKp-8f-l5X"/>
-                            <constraint firstItem="d8a-8h-VsE" firstAttribute="top" secondItem="jel-0s-Lfa" secondAttribute="bottom" constant="8" id="Sm0-8t-YfY"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="top" secondItem="vZI-Ri-Tfz" secondAttribute="top" id="Tdt-f4-bKF"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="130" id="WY1-VJ-ml2"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="baseline" secondItem="Wt4-35-Asx" secondAttribute="firstBaseline" id="Yfz-10-F13"/>
-                            <constraint firstItem="U9L-OI-WSF" firstAttribute="top" secondItem="36I-kg-yiV" secondAttribute="top" id="bsn-U8-Ic5"/>
-                            <constraint firstItem="U9L-OI-WSF" firstAttribute="firstBaseline" secondItem="36I-kg-yiV" secondAttribute="baseline" id="dIp-EP-gK5"/>
-                            <constraint firstItem="1Qv-Fw-bCn" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="f6q-ei-BxL"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="top" secondItem="Wt4-35-Asx" secondAttribute="top" id="iw2-Dw-WtA"/>
-                            <constraint firstItem="U9L-OI-WSF" firstAttribute="leading" secondItem="36I-kg-yiV" secondAttribute="trailing" constant="8" symbolic="YES" id="kbw-GK-lBd"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="baseline" secondItem="d8a-8h-VsE" secondAttribute="baseline" id="kkP-dw-FED"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="leading" secondItem="Wt4-35-Asx" secondAttribute="trailing" constant="-4" id="ryO-CN-fwd"/>
                             <constraint firstItem="jel-0s-Lfa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="tsp-Gj-1nS"/>
-                            <constraint firstItem="1Qv-Fw-bCn" firstAttribute="centerX" secondItem="jel-0s-Lfa" secondAttribute="centerX" id="uet-di-6YR"/>
-                            <constraint firstItem="vZI-Ri-Tfz" firstAttribute="trailing" secondItem="jel-0s-Lfa" secondAttribute="trailing" id="v3S-hr-osf"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="top" secondItem="d8a-8h-VsE" secondAttribute="top" id="xzg-Ri-cNT"/>
-                            <constraint firstItem="d8a-8h-VsE" firstAttribute="top" secondItem="jel-0s-Lfa" secondAttribute="bottom" constant="8" id="z2R-Yi-jWj"/>
-                            <constraint firstItem="36I-kg-yiV" firstAttribute="bottom" secondItem="vZI-Ri-Tfz" secondAttribute="bottom" id="zIR-mz-AEK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Atlantic Hurricane Seasons" id="ZEg-9n-wWV"/>
                     <connections>
-                        <outlet property="clearButton" destination="d8a-8h-VsE" id="LZn-GV-eR8"/>
-                        <outlet property="cosButton" destination="36I-kg-yiV" id="VPx-fb-oww"/>
-                        <outlet property="cosZipButton" destination="U9L-OI-WSF" id="TlA-LU-bdZ"/>
-                        <outlet property="loading" destination="1Qv-Fw-bCn" id="uip-lU-ix1"/>
-                        <outlet property="progressBar" destination="cF7-Oa-kFD" id="1A7-ht-Oza"/>
-                        <outlet property="timerLabel" destination="vZI-Ri-Tfz" id="vjs-L0-bcb"/>
-                        <outlet property="urlButton" destination="Wt4-35-Asx" id="Wnb-63-YRP"/>
-                        <outlet property="urlCollectionView" destination="jel-0s-Lfa" id="nem-yT-SMU"/>
+                        <outlet property="imageCollectionView" destination="jel-0s-Lfa" id="VaW-qw-oA4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52.173913043478265" y="26.116071428571427"/>
+            <point key="canvasLocation" x="2858" y="-675"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="LbK-Mn-PKz">
+            <objects>
+                <viewController id="hJM-22-JvF" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ssd-zV-rYo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="lNc-zP-5Ap"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="history" id="iSX-jc-VuB"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VlH-WN-RXJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="754" y="-13"/>
+        </scene>
+        <!--Download Atlantic Hurricane Season Images-->
+        <scene sceneID="Cic-pm-k3F">
+            <objects>
+                <viewController id="LuM-fb-Dj0" customClass="DownloadViewController" customModule="Test2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rZS-7R-olF">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XRg-Cw-eUy">
+                                <rect key="frame" x="157" y="398" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <state key="normal" title="Start">
+                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="startDownload:" destination="LuM-fb-Dj0" eventType="touchUpInside" id="9Vg-vi-dU2"/>
+                                </connections>
+                            </button>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SHP-qW-jnv">
+                                <rect key="frame" x="0.0" y="683" width="414" height="130"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="LuM-fb-Dj0" id="TaV-TB-6OT"/>
+                                    <outlet property="delegate" destination="LuM-fb-Dj0" id="pm5-uW-1d6"/>
+                                </connections>
+                            </pickerView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HUX-Ai-Geu">
+                                <rect key="frame" x="20" y="557" width="374" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="mAS-E1-Ylh">
+                                <rect key="frame" x="197" y="501" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0.0 sec" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fd1-2g-61F">
+                                <rect key="frame" x="107" y="398" width="200" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="40"/>
+                                <color key="textColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="R0U-V4-5E1"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="downloads" id="SMe-K1-sZa"/>
+                    <navigationItem key="navigationItem" title="Download Atlantic Hurricane Season Images" id="mID-hk-0rE"/>
+                    <connections>
+                        <outlet property="downloadPickerView" destination="SHP-qW-jnv" id="Kiq-XL-QAx"/>
+                        <outlet property="loading" destination="mAS-E1-Ylh" id="jds-Hw-gYa"/>
+                        <outlet property="progressBar" destination="HUX-Ai-Geu" id="Ths-GX-0aG"/>
+                        <outlet property="startButton" destination="XRg-Cw-eUy" id="uXl-j7-Zi5"/>
+                        <outlet property="timerLabel" destination="fd1-2g-61F" id="alV-Gw-NRH"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="images" id="Osz-jz-8ih"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iza-2e-9in" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1796" y="-675"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="taO-P9-R2S">
+            <objects>
+                <tabBarController id="Z07-LG-2vX" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RfF-pV-6ql">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Q4S-Rt-CiI" kind="relationship" relationship="viewControllers" id="uZM-r9-fTa"/>
+                        <segue destination="hJM-22-JvF" kind="relationship" relationship="viewControllers" id="ceK-cI-qLL"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lrH-8S-0Iw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-216" y="-353"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8MN-W7-2Ul">
+            <objects>
+                <navigationController id="Q4S-Rt-CiI" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="downloads" id="5Zc-cz-C0C"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ciE-FL-Zvd">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="LuM-fb-Dj0" kind="relationship" relationship="rootViewController" id="2gf-xP-ZWY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ptY-Ka-RjV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="754" y="-675"/>
         </scene>
     </scenes>
 </document>
