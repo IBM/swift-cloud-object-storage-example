@@ -18,7 +18,6 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     var images:[UIImage] = []
     var years:[String] = []
     var currentWorkingPath = ""
-    let alamoGroup = DispatchGroup()
     var totalImages = 0
     let downloadTypes = ["URL", "COS", "COS ZIP"]
     var currentDownloadType = "URL"
@@ -41,6 +40,16 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
         //return UIStatusBarStyle.default   // Make dark again
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        clear()
+        startButton.isHidden = false
+        loading.isHidden = true
+        progressBar.isHidden = true
+        timerLabel.isHidden = true
     }
     
     override func viewDidLoad() {
@@ -109,9 +118,9 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         if currentDownloadType == downloadTypes[0] {
             getURLImages()
         } else if currentDownloadType == downloadTypes[1] {
-            getAccessToken(isZipped: false)
+            getCOSImages()
         } else if currentDownloadType == downloadTypes[2] {
-            getAccessToken(isZipped: true)
+            getCOSZip()
         }
     }
     
@@ -137,206 +146,134 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         currentWorkingPath = ""
     }
 
-    // Gets locations of all Images on Wikipedia
+    // Gets Images on Wikipedia
     func getURLImages() {
-        loading.isHidden = false
-        loading.startAnimating()
+        let alamoGroup = DispatchGroup()
+        alamoGroup.enter()
         
-        Alamofire.request("https://en.wikipedia.org/wiki/Atlantic_hurricane_season").responseString(queue: nil, encoding: .utf8) { response in
-            let html = response.result.value
-            let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
-            
-            let xpath = doc.xpath("/html/body/div[3]/div[3]/div[4]/div/table/tbody/tr/td[2]/a/img/@src")
-            
+        APICalls.getURLHTML { xpath in
             self.totalImages = xpath.count
+            
+            self.loading.isHidden = false
+            self.loading.startAnimating()
             self.progressBar.isHidden = false
             
             self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
             
             for node in xpath {
-                
-                self.getImage(url: "https:"+node.text!.prefix(upTo: node.text!.lastIndex(of: "/")!).replacingOccurrences(of: "/thumb", with: ""), year: String(node.text!.prefix(56).suffix(4)), retry: 3)
-            }
-            
-            // after dispatchgroup is done, execute
-            self.alamoGroup.notify(queue: .main) {
-                self.loading.isHidden = true
-                self.loading.stopAnimating()
-                self.progressBar.isHidden = true
-                self.years.sort(by: <)
-                self.timer.invalidate()
-                self.startButton.isEnabled = true
-                //self.urlCollectionView.reloadData()
-                self.performSegue(withIdentifier: "images", sender: self)
-            }
-        }
-    }
-    
-    // Gets names of all objects (images) in COS bucket
-    func getCOSImages(token: String) {
-        loading.isHidden = false
-        loading.startAnimating()
-        
-        let url = cosPublicEndpoint + "/" + cosBucket
-        let headers = ["Authorization": "Bearer " + token,
-                       "ibm-service-instance-id": ibmServiceInstanceId]
-        
-        Alamofire.request(url, method: .get, headers: headers).responseString(queue: nil, encoding: .utf8) { response in
-            let html = response.result.value
-            let doc = try! Kanna.XML(xml: html!, encoding: .utf8)
-            let xpath = doc.xpath("//bucket:Key", namespaces: ["bucket": "http://s3.amazonaws.com/doc/2006-03-01/"])
-            
-            self.totalImages = xpath.count
-            self.progressBar.isHidden = false
-            
-            self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
-            
-            for node in xpath {
-                
-                self.getImage(url: url+"/"+node.text!, year: String(node.text!.prefix(4)), headers: headers, retry: 3)
-                
-            }
-            
-            // after dispatchgroup is done, execute
-            self.alamoGroup.notify(queue: .main) {
-                self.loading.isHidden = true
-                self.loading.stopAnimating()
-                self.progressBar.isHidden = true
-                self.years.sort(by: <)
-                self.timer.invalidate()
-                //self.urlCollectionView.reloadData()
-                self.startButton.isEnabled = true
-            }
-        }
-    }
-    
-    // Downloads an image
-    func getImage(url: String, year: String, headers: [String:String]? = nil, retry: Int) {
-        alamoGroup.enter()
-        
-        Alamofire.request(url, method: .get, headers: headers).responseData { response in
-            print(year)
-            if let error = response.error {
-                print("Error with ",year)
-                print(error)
-                if retry > 0 {
-                    self.getImage(url: url, year: year, headers: headers, retry: retry - 1)
-                }
-            }
-            if let data = response.result.value {
-                self.images.append(UIImage(data: data)!)
-                self.years.append(year)
-                self.progressBar.setProgress(Float(self.images.count) / Float(self.totalImages), animated: true)
-            }
-            // leave after done
-            self.alamoGroup.leave()
-        }
-    }
-    
-    // Gets access token needed for interacting with COS
-    func getAccessToken(isZipped: Bool) {
-        let url = "https://iam.bluemix.net/oidc/token"
-        let parameters = ["apikey": apikey,
-                          "response_type": "cloud_iam",
-                          "grant_type": "urn:ibm:params:oauth:grant-type:apikey"] //-d
-        let headers = ["Content-Type": "application/x-www-form-urlencoded",
-                       "Accept": "application/json"] //-H
-        
-        Alamofire.request(url, method: .post, parameters: parameters, headers: headers).responseJSON { response in
-            
-            if let json = response.result.value {
-                let jsonData:Dictionary = json as! Dictionary<String, Any>
-                DispatchQueue.main.async {
-                    if isZipped {
-                        self.getCOSZip(token: jsonData["access_token"]! as! String)
-                    } else {
-                        self.getCOSImages(token: jsonData["access_token"]! as! String)
+                alamoGroup.enter()
+                let year = String(node.text!.prefix(56).suffix(4))
+                APICalls.getImage(url: "https:"+node.text!, year: year, retry: 3, completion: { image in
+                    self.images.append(image)
+                    self.years.append(year)
+                    self.progressBar.setProgress(Float(self.images.count) / Float(self.totalImages), animated: true)
+                    alamoGroup.leave()
+                    if self.images.count == self.totalImages {
+                        alamoGroup.leave()
                     }
-                }
+                })
             }
         }
-    }
-    
-    /*func getCOSImages2() {
-     var cos = COS(apiKey: apikey, ibmServiceInstanceID: ibmServiceInstanceId)
-     cos.listBuckets() { result in
-     print(result.buckets!.first?.bucket![0].name! as! String)
-     }
-     cos.listObjects(bucketName: "atlantic-hurricanes", failure: { error in
-     print("Error")
-     print(error)
-     }) { result in
-     print("result")
-     print(result)
-     }
-     }*/
-    
-    // Downloads Zip file from COS bucket and decompresses file to get Images
-    func getCOSZip(token: String) {
-        loading.isHidden = false
-        loading.startAnimating()
-        
-        let url = cosPublicEndpoint + "/" + cosZipBucket + "/Atlantic_hurricane_seasons_summary_map.zip"
-        let headers = ["Authorization": "Bearer " + token,
-                       "ibm-service-instance-id": ibmServiceInstanceId]
-        
-        let fileURL: URL = URL(string: "file://" + NSHomeDirectory() + "/Temp/hurricanes.zip")!
-        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-            return (fileURL, [.createIntermediateDirectories, .removePreviousFile])
-        }
-        
-        self.progressBar.isHidden = false
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
-        
-        alamoGroup.enter()
-        
-        Alamofire.download(url, method: .get, headers: headers, to: destination)
-            .downloadProgress(closure: { progress in
-                self.progressBar.setProgress(Float(progress.fractionCompleted), animated: true)
-            })
-            .validate().responseData { response in
-                debugPrint(response)
-                
-                let fileManager = FileManager()
-                self.currentWorkingPath = (response.destinationURL?.deletingLastPathComponent().path)!
-                
-                var sourceURL = URL(fileURLWithPath: self.currentWorkingPath)
-                sourceURL.appendPathComponent("hurricanes.zip")
-                
-                var destinationURL = URL(fileURLWithPath: self.currentWorkingPath)
-                destinationURL.appendPathComponent("hurricanes")
-                
-                do {
-                    try fileManager.createDirectory(at: destinationURL, withIntermediateDirectories: true, attributes: nil)
-                    try fileManager.unzipItem(at: sourceURL, to: destinationURL)
-                } catch {
-                    print("Extraction of ZIP archive failed with error:\(error)")
-                }
-                
-                do {
-                    let destinationFiles = try fileManager.contentsOfDirectory(atPath: destinationURL.path)
-                    for destinationFile in destinationFiles {
-                        if destinationFile.suffix(3) == "png" {
-                            self.years.append(String(destinationFile.prefix(4)))
-                            self.images.append(UIImage(contentsOfFile: destinationURL.path + "/" + destinationFile)!)
-                        }
-                    }
-                } catch {
-                    print("Directory does not exist")
-                }
-                
-                self.alamoGroup.leave()
-                
-        }
-        self.alamoGroup.notify(queue: .main) {
+            
+        // after dispatchgroup is done, execute
+        alamoGroup.notify(queue: .main) {
             self.loading.isHidden = true
             self.loading.stopAnimating()
             self.progressBar.isHidden = true
             self.years.sort(by: <)
             self.timer.invalidate()
-            //self.urlCollectionView.reloadData()
             self.startButton.isEnabled = true
+            //self.urlCollectionView.reloadData()
+            self.performSegue(withIdentifier: "images", sender: self)
+        
+        }
+    }
+    
+    // Gets all objects (images) in COS bucket
+    func getCOSImages() {
+        let alamoGroup = DispatchGroup()
+        alamoGroup.enter()
+        
+        APICalls.getAccessToken(apikey: apikey) {accessToken in
+            let url = self.cosPublicEndpoint + "/" + self.cosBucket
+            let headers = ["Authorization": "Bearer " + accessToken, "ibm-service-instance-id": self.ibmServiceInstanceId]
+            
+            APICalls.getCOSBucketObjects(url: url, headers: headers) { xpath in
+                self.totalImages = xpath.count
+                
+                self.loading.isHidden = false
+                self.loading.startAnimating()
+                self.progressBar.isHidden = false
+                
+                self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
+                
+                for node in xpath {
+                    alamoGroup.enter()
+                    let year = String(node.text!.prefix(4))
+                    APICalls.getImage(url: url+"/"+node.text!, year: year, headers: headers, retry: 3, completion: { image in
+                        self.images.append(image)
+                        self.years.append(year)
+                        self.progressBar.setProgress(Float(self.images.count) / Float(self.totalImages), animated: true)
+                        alamoGroup.leave()
+                        if self.images.count == self.totalImages {
+                            alamoGroup.leave()
+                        }
+                    })
+                }
+            }
+        }
+        
+        // after dispatchgroup is done, execute
+        alamoGroup.notify(queue: .main) {
+            self.loading.isHidden = true
+            self.loading.stopAnimating()
+            self.progressBar.isHidden = true
+            self.years.sort(by: <)
+            self.timer.invalidate()
+            self.startButton.isEnabled = true
+            //self.urlCollectionView.reloadData()
+            self.performSegue(withIdentifier: "images", sender: self)
+            
+        }
+    }
+    
+    // Downloads Zip file from COS bucket and decompresses file to get Images
+    func getCOSZip() {
+        let alamoGroup = DispatchGroup()
+        alamoGroup.enter()
+        
+        APICalls.getAccessToken(apikey: apikey) {accessToken in
+        
+            let url = self.cosPublicEndpoint + "/" + self.cosZipBucket + "/Atlantic_hurricane_seasons_summary_map.zip"
+            let headers = ["Authorization": "Bearer " + accessToken, "ibm-service-instance-id": self.ibmServiceInstanceId]
+        
+            self.loading.isHidden = false
+            self.loading.startAnimating()
+            self.progressBar.isHidden = false
+            
+            self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
+            
+            APICalls.getCOSZip(url: url, headers: headers, downloadProgress: {progress in
+                self.progressBar.setProgress(progress, animated: true)
+            }, completion: { images in
+                for (year,image) in images {
+                    self.years.append(year)
+                    self.images.append(image)
+                }
+                alamoGroup.leave()
+            })
+            
+        }
+  
+        alamoGroup.notify(queue: .main) {
+            self.loading.isHidden = true
+            self.loading.stopAnimating()
+            self.progressBar.isHidden = true
+            self.years.sort(by: <)
+            self.timer.invalidate()
+            self.startButton.isEnabled = true
+            //self.urlCollectionView.reloadData()
+            self.performSegue(withIdentifier: "images", sender: self)
         }
     }
     
