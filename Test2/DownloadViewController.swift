@@ -15,15 +15,17 @@ import SwiftyPlistManager
 
 class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    var images:[UIImage] = []
-    var years:[String] = []
-    var currentWorkingPath = ""
+    var images:[(String,UIImage)] = []
     var totalImages = 0
+    
+    var currentWorkingPath = ""
     let downloadTypes = ["URL", "COS", "COS ZIP"]
     var currentDownloadType = "URL"
     
     var time: Int = 0
     var timer = Timer()
+    
+    var isDownloading = false
     
     var apikey = ""
     var ibmServiceInstanceId = ""
@@ -45,11 +47,13 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        clear()
-        startButton.isHidden = false
-        loading.isHidden = true
-        progressBar.isHidden = true
-        timerLabel.isHidden = true
+        if !isDownloading {
+            clear()
+            startButton.isHidden = false
+            loading.isHidden = true
+            progressBar.isHidden = true
+            timerLabel.isHidden = true
+        }
     }
     
     override func viewDidLoad() {
@@ -75,7 +79,6 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         
         if let imageViewController = segue.destination as? ImageViewController {
             imageViewController.images = images
-            imageViewController.years = years
             imageViewController.time = time
         }
     }
@@ -114,6 +117,8 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         startButton.isEnabled = false
         startButton.isHidden = true
         timerLabel.isHidden = false
+        
+        isDownloading = true
 
         if currentDownloadType == downloadTypes[0] {
             getURLImages()
@@ -126,7 +131,6 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     
     private func clear() {
         images = []
-        years = []
         totalImages = 0
         progressBar.setProgress(0.0, animated: false)
         timer.invalidate()
@@ -151,12 +155,12 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         let alamoGroup = DispatchGroup()
         alamoGroup.enter()
         
+        self.loading.isHidden = false
+        self.loading.startAnimating()
+        self.progressBar.isHidden = false
+        
         APICalls.getURLHTML { xpath in
             self.totalImages = xpath.count
-            
-            self.loading.isHidden = false
-            self.loading.startAnimating()
-            self.progressBar.isHidden = false
             
             self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
             
@@ -164,8 +168,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 alamoGroup.enter()
                 let year = String(node.text!.prefix(56).suffix(4))
                 APICalls.getImage(url: "https:"+node.text!, year: year, retry: 3, completion: { image in
-                    self.images.append(image)
-                    self.years.append(year)
+                    self.images.append((year,image))
                     self.progressBar.setProgress(Float(self.images.count) / Float(self.totalImages), animated: true)
                     alamoGroup.leave()
                     if self.images.count == self.totalImages {
@@ -177,13 +180,15 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
             
         // after dispatchgroup is done, execute
         alamoGroup.notify(queue: .main) {
+            self.timer.invalidate()
             self.loading.isHidden = true
             self.loading.stopAnimating()
             self.progressBar.isHidden = true
-            self.years.sort(by: <)
-            self.timer.invalidate()
+            self.images.sort(by: { (first, second) -> Bool in
+                first.0 < second.0
+            })
             self.startButton.isEnabled = true
-            //self.urlCollectionView.reloadData()
+            self.isDownloading = false
             self.performSegue(withIdentifier: "images", sender: self)
         
         }
@@ -194,6 +199,10 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         let alamoGroup = DispatchGroup()
         alamoGroup.enter()
         
+        self.loading.isHidden = false
+        self.loading.startAnimating()
+        self.progressBar.isHidden = false
+        
         APICalls.getAccessToken(apikey: apikey) {accessToken in
             let url = self.cosPublicEndpoint + "/" + self.cosBucket
             let headers = ["Authorization": "Bearer " + accessToken, "ibm-service-instance-id": self.ibmServiceInstanceId]
@@ -201,18 +210,13 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
             APICalls.getCOSBucketObjects(url: url, headers: headers) { xpath in
                 self.totalImages = xpath.count
                 
-                self.loading.isHidden = false
-                self.loading.startAnimating()
-                self.progressBar.isHidden = false
-                
                 self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
                 
                 for node in xpath {
                     alamoGroup.enter()
                     let year = String(node.text!.prefix(4))
                     APICalls.getImage(url: url+"/"+node.text!, year: year, headers: headers, retry: 3, completion: { image in
-                        self.images.append(image)
-                        self.years.append(year)
+                        self.images.append((year,image))
                         self.progressBar.setProgress(Float(self.images.count) / Float(self.totalImages), animated: true)
                         alamoGroup.leave()
                         if self.images.count == self.totalImages {
@@ -225,13 +229,15 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         
         // after dispatchgroup is done, execute
         alamoGroup.notify(queue: .main) {
+            self.timer.invalidate()
             self.loading.isHidden = true
             self.loading.stopAnimating()
             self.progressBar.isHidden = true
-            self.years.sort(by: <)
-            self.timer.invalidate()
+            self.images.sort(by: { (first, second) -> Bool in
+                first.0 < second.0
+            })
             self.startButton.isEnabled = true
-            //self.urlCollectionView.reloadData()
+            self.isDownloading = false
             self.performSegue(withIdentifier: "images", sender: self)
             
         }
@@ -242,14 +248,14 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         let alamoGroup = DispatchGroup()
         alamoGroup.enter()
         
+        self.loading.isHidden = false
+        self.loading.startAnimating()
+        self.progressBar.isHidden = false
+        
         APICalls.getAccessToken(apikey: apikey) {accessToken in
         
             let url = self.cosPublicEndpoint + "/" + self.cosZipBucket + "/Atlantic_hurricane_seasons_summary_map.zip"
             let headers = ["Authorization": "Bearer " + accessToken, "ibm-service-instance-id": self.ibmServiceInstanceId]
-        
-            self.loading.isHidden = false
-            self.loading.startAnimating()
-            self.progressBar.isHidden = false
             
             self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)
             
@@ -257,8 +263,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 self.progressBar.setProgress(progress, animated: true)
             }, completion: { images in
                 for (year,image) in images {
-                    self.years.append(year)
-                    self.images.append(image)
+                    self.images.append((year,image))
                 }
                 alamoGroup.leave()
             })
@@ -266,13 +271,15 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         }
   
         alamoGroup.notify(queue: .main) {
+            self.timer.invalidate()
             self.loading.isHidden = true
             self.loading.stopAnimating()
             self.progressBar.isHidden = true
-            self.years.sort(by: <)
-            self.timer.invalidate()
+            self.images.sort(by: { (first, second) -> Bool in
+                first.0 < second.0
+            })
             self.startButton.isEnabled = true
-            //self.urlCollectionView.reloadData()
+            self.isDownloading = false
             self.performSegue(withIdentifier: "images", sender: self)
         }
     }

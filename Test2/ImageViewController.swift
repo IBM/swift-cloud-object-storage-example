@@ -11,8 +11,7 @@ import UIKit
 
 class ImageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    var images:[UIImage]!
-    var years:[String]!
+    var images:[(String,UIImage)]!
     var time: Int!
     
     @IBOutlet weak var imageCollectionView: UICollectionView!
@@ -44,8 +43,8 @@ class ImageViewController: UIViewController, UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "urlCell", for: indexPath) as! imageCell
-        cell.myImageView.image = images[indexPath.row]
-        cell.myLabel.text = years[indexPath.row]
+        cell.myImageView.image = images[indexPath.row].1
+        cell.myLabel.text = images[indexPath.row].0
         return cell
     }
 }
