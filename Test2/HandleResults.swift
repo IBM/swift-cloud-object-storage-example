@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CSVImporter
 
 class HandleResults {
     
@@ -37,10 +36,21 @@ class HandleResults {
     
     static func readData(fileURL: URL, completion: @escaping (_ results: [[String]]) -> Void) {
         
-        let importer = CSVImporter<[String]>(path: fileURL.path)
-        importer.startImportingRecords { $0 }.onFinish { results in
+        var results: [[String]] = []
+        
+        do {
+            let fileContents = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
+            
+            let lines = fileContents.split(separator: "\n")
+            
+            for line in lines {
+                var resultComponents = line.split(separator: ",")
+                results.append([String(resultComponents[0]),String(resultComponents[1]),String(resultComponents[2])])
+            }
+            
             completion(results)
         }
+        catch {}
     }
     
     static func deleteData(fileURL: URL) {
