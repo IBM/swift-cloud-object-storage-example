@@ -6,4 +6,5 @@ target 'Test2' do
   pod 'Kanna', '~> 4.0.0'
   pod 'ZIPFoundation', '~> 0.9'
   pod 'SwiftyPlistManager', '~> 1.0.1'
+  pod 'CSVImporter', '~> 1.9.1'
 end

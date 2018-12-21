@@ -78,7 +78,7 @@ class APICalls {
     
     // Downloads Zip file from COS bucket and decompresses file to get Images
     static func getCOSZip(url: String, headers: [String:String], downloadProgress: @escaping (_ progress: Float) -> Void, completion: @escaping (_ images: [String:UIImage]) -> Void) {
-        let fileURL: URL = URL(string: "file://" + NSHomeDirectory() + "/Temp/hurricanes.zip")!
+        let fileURL: URL = URL(string: "file://" + NSHomeDirectory() + "/Documents/HurricaneData/hurricanes.zip")!
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             return (fileURL, [.createIntermediateDirectories, .removePreviousFile])
         }

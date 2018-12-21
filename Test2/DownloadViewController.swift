@@ -21,6 +21,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     var currentWorkingPath = ""
     let downloadTypes = ["URL", "COS", "COS ZIP"]
     var currentDownloadType = "URL"
+    let resultsFileURL = URL(string: "file://" + NSHomeDirectory() + "/Documents/results.csv")!
     
     var time: Int = 0
     var timer = Timer()
@@ -38,11 +39,6 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     @IBOutlet weak var downloadPickerView: UIPickerView!
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-        //return UIStatusBarStyle.default   // Make dark again
-    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -189,6 +185,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
             })
             self.startButton.isEnabled = true
             self.isDownloading = false
+            HandleResults.writeData(fileURL: self.resultsFileURL, time: self.time, type: self.currentDownloadType)
             self.performSegue(withIdentifier: "images", sender: self)
         
         }

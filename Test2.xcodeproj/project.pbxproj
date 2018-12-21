@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A002DC6521BB03BB0067160D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A002DC6421BB03BB0067160D /* AppDelegate.swift */; };
-		A02E2F2621825AB200068C37 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02E2F2521825AB200068C37 /* ViewController.swift */; };
 		A02E2F2921825AB200068C37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A02E2F2721825AB200068C37 /* Main.storyboard */; };
 		A02E2F2B21825AB300068C37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A02E2F2A21825AB300068C37 /* Assets.xcassets */; };
 		A02E2F2E21825AB300068C37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A02E2F2C21825AB300068C37 /* LaunchScreen.storyboard */; };
@@ -17,6 +16,9 @@
 		A0C8D2A121CAA31A0035EAC9 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2A021CAA31A0035EAC9 /* DownloadViewController.swift */; };
 		A0C8D2A321CACB840035EAC9 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2A221CACB840035EAC9 /* ImageViewController.swift */; };
 		A0C8D2A921CBF1680035EAC9 /* APICalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2A821CBF1680035EAC9 /* APICalls.swift */; };
+		A0C8D2AB21CD50CE0035EAC9 /* HandleResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2AA21CD50CE0035EAC9 /* HandleResults.swift */; };
+		A0C8D2AD21CD6A2C0035EAC9 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2AC21CD6A2C0035EAC9 /* ResultsViewController.swift */; };
+		A0C8D2B121CD77460035EAC9 /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2B021CD77460035EAC9 /* ResultsTableViewCell.swift */; };
 		A9905C9DDB92D25474ECC7A0 /* Pods_Test2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AFB0B01FB4AC57E254D30E5 /* Pods_Test2.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +27,6 @@
 		3DB7156B1ED33C9C9AC2AFE6 /* Pods-Test2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test2.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test2/Pods-Test2.release.xcconfig"; sourceTree = "<group>"; };
 		A002DC6421BB03BB0067160D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A02E2F2021825AB200068C37 /* Test2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test2.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A02E2F2521825AB200068C37 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A02E2F2821825AB200068C37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A02E2F2A21825AB300068C37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A02E2F2D21825AB300068C37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -35,6 +36,9 @@
 		A0C8D2A021CAA31A0035EAC9 /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
 		A0C8D2A221CACB840035EAC9 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		A0C8D2A821CBF1680035EAC9 /* APICalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICalls.swift; sourceTree = "<group>"; };
+		A0C8D2AA21CD50CE0035EAC9 /* HandleResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleResults.swift; sourceTree = "<group>"; };
+		A0C8D2AC21CD6A2C0035EAC9 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
+		A0C8D2B021CD77460035EAC9 /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
 		EC4CC555013A3DE85987CEA3 /* Pods-Test2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test2/Pods-Test2.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				A002DC6421BB03BB0067160D /* AppDelegate.swift */,
-				A02E2F2521825AB200068C37 /* ViewController.swift */,
 				A0C8D2A021CAA31A0035EAC9 /* DownloadViewController.swift */,
 				A0C8D2A821CBF1680035EAC9 /* APICalls.swift */,
 				A02E2F2721825AB200068C37 /* Main.storyboard */,
@@ -91,6 +94,9 @@
 				A02E2F2F21825AB300068C37 /* Info.plist */,
 				A0C8D29E21C3F5FA0035EAC9 /* Data.plist */,
 				A0C8D2A221CACB840035EAC9 /* ImageViewController.swift */,
+				A0C8D2AA21CD50CE0035EAC9 /* HandleResults.swift */,
+				A0C8D2AC21CD6A2C0035EAC9 /* ResultsViewController.swift */,
+				A0C8D2B021CD77460035EAC9 /* ResultsTableViewCell.swift */,
 			);
 			path = Test2;
 			sourceTree = "<group>";
@@ -183,6 +189,8 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Test2/Pods-Test2-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CSVImporter/CSVImporter.framework",
+				"${BUILT_PRODUCTS_DIR}/HandySwift/HandySwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyPlistManager/SwiftyPlistManager.framework",
 				"${BUILT_PRODUCTS_DIR}/ZIPFoundation/ZIPFoundation.framework",
@@ -192,6 +200,8 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CSVImporter.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HandySwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyPlistManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZIPFoundation.framework",
@@ -231,8 +241,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A002DC6521BB03BB0067160D /* AppDelegate.swift in Sources */,
-				A02E2F2621825AB200068C37 /* ViewController.swift in Sources */,
 				A0C8D2A921CBF1680035EAC9 /* APICalls.swift in Sources */,
+				A0C8D2B121CD77460035EAC9 /* ResultsTableViewCell.swift in Sources */,
+				A0C8D2AB21CD50CE0035EAC9 /* HandleResults.swift in Sources */,
+				A0C8D2AD21CD6A2C0035EAC9 /* ResultsViewController.swift in Sources */,
 				A0C8D2A321CACB840035EAC9 /* ImageViewController.swift in Sources */,
 				A0C8D2A121CAA31A0035EAC9 /* DownloadViewController.swift in Sources */,
 				A02E2F41219E080300068C37 /* imageCell.swift in Sources */,

@@ -30,7 +30,7 @@ Ensure you have the [required developer tools installed from Apple](https://deve
 
 ## 2. Install dependencies
 
-This pattern uses [Alamofire](https://github.com/Alamofire/Alamofire), [Kanna](https://github.com/tid-kijyun/Kanna), [ZIPFoundation](https://github.com/weichsel/ZIPFoundation), and [SwiftyPlistManager](https://github.com/rebeloper/SwiftyPlistManager) which all work with [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
+This pattern uses [Alamofire](https://github.com/Alamofire/Alamofire), [Kanna](https://github.com/tid-kijyun/Kanna), [ZIPFoundation](https://github.com/weichsel/ZIPFoundation), [SwiftyPlistManager](https://github.com/rebeloper/SwiftyPlistManager), and [CSVImporter](https://github.com/Flinesoft/CSVImporter) which all work with [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
 
 You can install CocoaPods using the following command:
 
