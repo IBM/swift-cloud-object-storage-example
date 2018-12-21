@@ -11,7 +11,11 @@ When the reader has completed this Code Pattern, they will understand how to:
 
 # Architecture
 
-TODO
+![](readme_images/architecture.png)
+
+1. User interacts with the app to start a download of objects (images) from Cloud Object Storage.
+2. The app makes the necessary calls to Cloud Object Storage to get the access token, list of bucket objects, and finally the objects (images) themselves.
+3. The images are downloaded and displayed on the app to the user.
 
 # Steps
 
