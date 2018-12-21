@@ -235,6 +235,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
             })
             self.startButton.isEnabled = true
             self.isDownloading = false
+            HandleResults.writeData(fileURL: self.resultsFileURL, time: self.time, type: self.currentDownloadType)
             self.performSegue(withIdentifier: "images", sender: self)
             
         }
@@ -277,6 +278,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
             })
             self.startButton.isEnabled = true
             self.isDownloading = false
+            HandleResults.writeData(fileURL: self.resultsFileURL, time: self.time, type: self.currentDownloadType)
             self.performSegue(withIdentifier: "images", sender: self)
         }
     }
