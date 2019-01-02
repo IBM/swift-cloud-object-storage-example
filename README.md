@@ -19,12 +19,22 @@ When the reader has completed this Code Pattern, they will understand how to:
 
 # Steps
 
-1. [Install developer tools](#1-install-developer-tools)
-2. [Install dependencies](#2-install-dependencies)
-3. [Create Cloud Object Storage Buckets](#3-create-cloud-object-storage-buckets)
-4. [Run in Xcode](#4-run-in-xcode)
+1. [Clone the repo](#1-clone-the-repo)
+2. [Install developer tools](#2-install-developer-tools)
+3. [Install dependencies](#3-install-dependencies)
+4. [Create Cloud Object Storage Buckets](#4-create-cloud-object-storage-buckets)
+5. [Run in Xcode](#5-run-in-xcode)
 
-## 1. Install developer tools
+## 1. Clone the repo
+
+Cone the repo locally. In a terminal, run: 
+
+```
+$ git clone https://github.com/IBM/swift-cloud-object-storage-example
+$ cd swift-cloud-object-storage-example
+```
+
+## 2. Install developer tools
 
 Ensure you have the [required developer tools installed from Apple](https://developer.apple.com/download/):
 
@@ -32,41 +42,41 @@ Ensure you have the [required developer tools installed from Apple](https://deve
 * Xcode 10.0+
 * Swift 4.0+
 
-## 2. Install dependencies
+## 3. Install dependencies
 
 This pattern uses [Alamofire](https://github.com/Alamofire/Alamofire), [Kanna](https://github.com/tid-kijyun/Kanna), [ZIPFoundation](https://github.com/weichsel/ZIPFoundation), and [SwiftyPlistManager](https://github.com/rebeloper/SwiftyPlistManager) which all work with [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
 
 You can install CocoaPods using the following command:
 
 ```
-sudo gem install cocoapods
+$ sudo gem install cocoapods
 ```
 
 If the CocoaPods repository is not configured, run the following command (this may take a long time depending on your network connection and installation state):
 
 ```
-pod setup
+$ pod setup
 ```
 
 A pre-configured `Podfile` has been included in this repository. To download and install the required dependencies, run the following command from your project directory:
 
 ```
-pod install
+$ pod install
 ```
 
 If you run into any issues during the pod install, it is recommended to run a pod update by using the following commands:
 
 ```
-pod update
+$ pod update
 ```
 
 ```
-pod install
+$ pod install
 ```
 
 Finally, open the Xcode workspace: `Test2.xcworkspace`.
 
-## 3. Create Cloud Object Storage Buckets
+## 4. Create Cloud Object Storage Buckets
 
 1. Provision the [IBM Cloud Object Storage Service] and follow the set of instructions for creating a Bucket.
 2. Upload the images in `atlantic_hurricane_seasons/images` to a Bucket. 
@@ -74,7 +84,7 @@ Finally, open the Xcode workspace: `Test2.xcworkspace`.
 4. Follow these [instructions](https://console.bluemix.net/docs/services/cloud-object-storage/cli/curl.html#request-an-iam-token-using-an-api-key) for obtaining an API key and `ibm-service-instance-id`
 5. Include the public endpoint, Bucket names, API key, and `ibm-service-instance-id` in `Data.plist`
 
-## 4. Run in Xcode
+## 5. Run in Xcode
 
 In Xcode, click **Product** > **Run** to start the iOS application.
 
