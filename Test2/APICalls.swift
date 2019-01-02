@@ -16,7 +16,7 @@ class APICalls {
     // Downloads an image
     static func getImage(url: String, year: String, headers: [String:String]? = nil, retry: Int, completion: @escaping (_ image: UIImage) -> Void) {
         Alamofire.request(url, method: .get, headers: headers).responseData { response in
-            print(year)
+            //print(year) //Used for debugging
             
             if let _ = response.error {
                 if retry > 0 {

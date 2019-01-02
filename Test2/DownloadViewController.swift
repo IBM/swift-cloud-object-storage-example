@@ -20,6 +20,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     
     var currentWorkingPath = ""
     let downloadTypes = ["URL", "COS", "COS ZIP"]
+    let downloadPickerViewOptions = ["Traditional Server (Wikipedia URLs)", "Cloud Object Storage (Images)", "Cloud Object Storage (ZIP Archive)"]
     var currentDownloadType = "URL"
     let resultsFileURL = URL(string: "file://" + NSHomeDirectory() + "/Documents/results.csv")!
     
@@ -96,11 +97,11 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return downloadTypes[row]
+        return downloadPickerViewOptions[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return downloadTypes.count
+        return downloadPickerViewOptions.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
