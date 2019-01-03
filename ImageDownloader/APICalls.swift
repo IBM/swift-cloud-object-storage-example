@@ -78,17 +78,11 @@ class APICalls {
     
     // Downloads Zip file from COS bucket and decompresses file to get Images
     static func getCOSZip(url: String, headers: [String:String], downloadProgress: @escaping (_ progress: Float) -> Void, completion: @escaping (_ images: [String:UIImage]) -> Void) {
-        let fileURL: URL = URL(string: "file://" + NSHomeDirectory() + "/Documents/HurricaneData/hurricanes.zip")!
+        
+        let fileURL: URL = getCleanFileURL()
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             return (fileURL, [.createIntermediateDirectories, .removePreviousFile])
         }
-        
-        do {
-            let fileManagerCheck = FileManager()
-            if fileManagerCheck.fileExists(atPath: fileURL.deletingLastPathComponent().path) {
-                try fileManagerCheck.removeItem(atPath: fileURL.deletingLastPathComponent().path)
-            }
-        } catch {}
         
         Alamofire.download(url, method: .get, headers: headers, to: destination)
             .downloadProgress(closure: { progress in
@@ -124,6 +118,22 @@ class APICalls {
                     print("Extraction of ZIP archive failed with error:\(error)")
                 }
         }
+    }
+    
+    // Returns file URL for destination of downloaded Zip archive. Removes Zip data if it already exists
+    static func getCleanFileURL() -> URL {
+        
+        let fileURL: URL = URL(string: "file://" + NSHomeDirectory() + "/Documents/HurricaneData/hurricanes.zip")!
+        
+        do {
+            let fileManagerCheck = FileManager()
+            if fileManagerCheck.fileExists(atPath: fileURL.deletingLastPathComponent().path) {
+                try fileManagerCheck.removeItem(atPath: fileURL.deletingLastPathComponent().path)
+            }
+        } catch {}
+        
+        return fileURL
+        
     }
 
 }
