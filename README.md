@@ -86,7 +86,7 @@ Finally, open the Xcode workspace: `Test2.xcworkspace`.
 
 ## 5. Run in Xcode
 
-In Xcode, click **Product** > **Run** to start the iOS application. Choose which download type to use for downloading the images from the Picker View. The results of the download history is listed in the `History` tab.
+In Xcode, click **Product** > **Run** to start the iOS application. Choose which download type to use for downloading the images from the Picker View. The download history results are logged in the `History` tab.
 
 # License
 
