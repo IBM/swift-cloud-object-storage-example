@@ -2,7 +2,7 @@
 [![Platform](https://img.shields.io/badge/platform-ios_swift-lightgrey.svg?style=flat)](https://developer.apple.com/swift/)
 
 # Image Downloader
-In this Code Pattern, we will look at comparing downloading Atlantic Hurricane Season images from a traditional server ([Wikipedia](https://en.wikipedia.org/wiki/Atlantic_hurricane_season ) in this case) and Cloud Object Storage on an iPhone.
+In this Code Pattern, we will look at comparing downloading Atlantic Hurricane Season images from a traditional server ([Wikipedia](https://en.wikipedia.org/wiki/Atlantic_hurricane_season ) in this case) and [Cloud Object Storage](https://www.ibm.com/cloud/object-storage) on an iPhone.
 
 When the reader has completed this Code Pattern, they will understand how to:
 
@@ -14,7 +14,7 @@ When the reader has completed this Code Pattern, they will understand how to:
 ![](readme_images/architecture.png)
 
 1. User interacts with the app to start a download of objects (images) from Cloud Object Storage.
-2. The app makes the necessary calls to Cloud Object Storage to get the access token, list of bucket objects, and finally the objects (images) themselves.
+2. The app makes the necessary calls to Cloud Object Storage to get the access token, list of bucket objects, and download the objects (images).
 3. The images are downloaded and displayed on the app to the user.
 
 # Steps
@@ -44,7 +44,7 @@ Ensure you have the [required developer tools installed from Apple](https://deve
 
 ## 3. Install dependencies
 
-This pattern uses [Alamofire](https://github.com/Alamofire/Alamofire), [Kanna](https://github.com/tid-kijyun/Kanna), [ZIPFoundation](https://github.com/weichsel/ZIPFoundation), and [SwiftyPlistManager](https://github.com/rebeloper/SwiftyPlistManager) which all work with [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
+This code pattern uses [Alamofire](https://github.com/Alamofire/Alamofire), [Kanna](https://github.com/tid-kijyun/Kanna), [ZIPFoundation](https://github.com/weichsel/ZIPFoundation), and [SwiftyPlistManager](https://github.com/rebeloper/SwiftyPlistManager) which all work with [CocoaPods](https://cocoapods.org/) to manage and configure dependencies.
 
 You can install CocoaPods using the following command:
 
@@ -78,21 +78,15 @@ Finally, open the Xcode workspace: `Test2.xcworkspace`.
 
 ## 4. Create Cloud Object Storage Buckets
 
-1. Provision the [IBM Cloud Object Storage Service] and follow the set of instructions for creating a Bucket.
+1. Provision the [IBM Cloud Object Storage Service](https://console.bluemix.net/catalog/services/cloud-object-storage) and follow the set of instructions for creating a Bucket.
 2. Upload the images in `atlantic_hurricane_seasons/images` to a Bucket. 
 3. Run `./zip_hurricane_images.sh` in `atlantic_hurrincane_seasons/zip` to create the zip file. Then upload the zip file to a different Bucket.
 4. Follow these [instructions](https://console.bluemix.net/docs/services/cloud-object-storage/cli/curl.html#request-an-iam-token-using-an-api-key) for obtaining an API key and `ibm-service-instance-id`
-5. Include the public endpoint, Bucket names, API key, and `ibm-service-instance-id` in `Data.plist`
+5. Include the public endpoint, Bucket names, API key, and `ibm-service-instance-id` in `Test2/Data.plist`
 
 ## 5. Run in Xcode
 
-In Xcode, click **Product** > **Run** to start the iOS application.
-
-### Notes about Interacting with the App
-* Pressing the `URL` button will start the downloading of images from a traditional server. In this case that is Wikipedia.
-* Pressing the `COS No Zip` button will start the downloading of images from Cloud Object Storage
-* Pressing the `COS Zip` button will start the downloading of the zip file containing the images from Cloud Object Storage
-* Pressing the Clear button will clear the images that have been downloaded.
+In Xcode, click **Product** > **Run** to start the iOS application. Choose which download type to use for downloading the images from the Picker View. The results of the download history is listed in the `History` tab.
 
 # License
 
