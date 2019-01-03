@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A02E2F1F21825AB200068C37"
-               BuildableName = "Test2.app"
-               BlueprintName = "Test2"
-               ReferencedContainer = "container:Test2.xcodeproj">
+               BuildableName = "ImageDownloader.app"
+               BlueprintName = "ImageDownloader"
+               ReferencedContainer = "container:ImageDownloader.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A02E2F1F21825AB200068C37"
-            BuildableName = "Test2.app"
-            BlueprintName = "Test2"
-            ReferencedContainer = "container:Test2.xcodeproj">
+            BuildableName = "ImageDownloader.app"
+            BlueprintName = "ImageDownloader"
+            ReferencedContainer = "container:ImageDownloader.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A02E2F1F21825AB200068C37"
-            BuildableName = "Test2.app"
-            BlueprintName = "Test2"
-            ReferencedContainer = "container:Test2.xcodeproj">
+            BuildableName = "ImageDownloader.app"
+            BlueprintName = "ImageDownloader"
+            ReferencedContainer = "container:ImageDownloader.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -89,9 +89,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A02E2F1F21825AB200068C37"
-            BuildableName = "Test2.app"
-            BlueprintName = "Test2"
-            ReferencedContainer = "container:Test2.xcodeproj">
+            BuildableName = "ImageDownloader.app"
+            BlueprintName = "ImageDownloader"
+            ReferencedContainer = "container:ImageDownloader.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		80B8CF1CDF484A62770F54F5 /* Pods_ImageDownloader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD6CA4A27895BB953C1ECD2 /* Pods_ImageDownloader.framework */; };
 		A002DC6521BB03BB0067160D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A002DC6421BB03BB0067160D /* AppDelegate.swift */; };
 		A02E2F2921825AB200068C37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A02E2F2721825AB200068C37 /* Main.storyboard */; };
 		A02E2F2B21825AB300068C37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A02E2F2A21825AB300068C37 /* Assets.xcassets */; };
@@ -19,14 +20,14 @@
 		A0C8D2AB21CD50CE0035EAC9 /* HandleResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2AA21CD50CE0035EAC9 /* HandleResults.swift */; };
 		A0C8D2AD21CD6A2C0035EAC9 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2AC21CD6A2C0035EAC9 /* ResultsViewController.swift */; };
 		A0C8D2B121CD77460035EAC9 /* ResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C8D2B021CD77460035EAC9 /* ResultsTableViewCell.swift */; };
-		A9905C9DDB92D25474ECC7A0 /* Pods_Test2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AFB0B01FB4AC57E254D30E5 /* Pods_Test2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E2852609D0040E74D011590 /* Pods-ImageDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageDownloader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ImageDownloader/Pods-ImageDownloader.release.xcconfig"; sourceTree = "<group>"; };
 		2AFB0B01FB4AC57E254D30E5 /* Pods_Test2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Test2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DB7156B1ED33C9C9AC2AFE6 /* Pods-Test2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test2.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test2/Pods-Test2.release.xcconfig"; sourceTree = "<group>"; };
 		A002DC6421BB03BB0067160D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A02E2F2021825AB200068C37 /* Test2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A02E2F2021825AB200068C37 /* ImageDownloader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageDownloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A02E2F2821825AB200068C37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A02E2F2A21825AB300068C37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A02E2F2D21825AB300068C37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -39,7 +40,9 @@
 		A0C8D2AA21CD50CE0035EAC9 /* HandleResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleResults.swift; sourceTree = "<group>"; };
 		A0C8D2AC21CD6A2C0035EAC9 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		A0C8D2B021CD77460035EAC9 /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
+		AFD6CA4A27895BB953C1ECD2 /* Pods_ImageDownloader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageDownloader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC4CC555013A3DE85987CEA3 /* Pods-Test2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test2/Pods-Test2.debug.xcconfig"; sourceTree = "<group>"; };
+		EF2A05E5F0B95E8C061F2B5D /* Pods-ImageDownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageDownloader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImageDownloader/Pods-ImageDownloader.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9905C9DDB92D25474ECC7A0 /* Pods_Test2.framework in Frameworks */,
+				80B8CF1CDF484A62770F54F5 /* Pods_ImageDownloader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +62,8 @@
 			children = (
 				EC4CC555013A3DE85987CEA3 /* Pods-Test2.debug.xcconfig */,
 				3DB7156B1ED33C9C9AC2AFE6 /* Pods-Test2.release.xcconfig */,
+				EF2A05E5F0B95E8C061F2B5D /* Pods-ImageDownloader.debug.xcconfig */,
+				0E2852609D0040E74D011590 /* Pods-ImageDownloader.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -66,7 +71,7 @@
 		A02E2F1721825AB200068C37 = {
 			isa = PBXGroup;
 			children = (
-				A02E2F2221825AB200068C37 /* Test2 */,
+				A02E2F2221825AB200068C37 /* ImageDownloader */,
 				A02E2F2121825AB200068C37 /* Products */,
 				A02E2F3721825EA600068C37 /* Frameworks */,
 				3376CFD218A2C806DBBBA297 /* Pods */,
@@ -76,12 +81,12 @@
 		A02E2F2121825AB200068C37 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A02E2F2021825AB200068C37 /* Test2.app */,
+				A02E2F2021825AB200068C37 /* ImageDownloader.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A02E2F2221825AB200068C37 /* Test2 */ = {
+		A02E2F2221825AB200068C37 /* ImageDownloader */ = {
 			isa = PBXGroup;
 			children = (
 				A002DC6421BB03BB0067160D /* AppDelegate.swift */,
@@ -98,13 +103,14 @@
 				A0C8D2AC21CD6A2C0035EAC9 /* ResultsViewController.swift */,
 				A0C8D2B021CD77460035EAC9 /* ResultsTableViewCell.swift */,
 			);
-			path = Test2;
+			path = ImageDownloader;
 			sourceTree = "<group>";
 		};
 		A02E2F3721825EA600068C37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				2AFB0B01FB4AC57E254D30E5 /* Pods_Test2.framework */,
+				AFD6CA4A27895BB953C1ECD2 /* Pods_ImageDownloader.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -112,9 +118,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A02E2F1F21825AB200068C37 /* Test2 */ = {
+		A02E2F1F21825AB200068C37 /* ImageDownloader */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A02E2F3221825AB300068C37 /* Build configuration list for PBXNativeTarget "Test2" */;
+			buildConfigurationList = A02E2F3221825AB300068C37 /* Build configuration list for PBXNativeTarget "ImageDownloader" */;
 			buildPhases = (
 				BACFF5DD9D5706864E4863DD /* [CP] Check Pods Manifest.lock */,
 				A02E2F1C21825AB200068C37 /* Sources */,
@@ -126,9 +132,9 @@
 			);
 			dependencies = (
 			);
-			name = Test2;
+			name = ImageDownloader;
 			productName = Test2;
-			productReference = A02E2F2021825AB200068C37 /* Test2.app */;
+			productReference = A02E2F2021825AB200068C37 /* ImageDownloader.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -146,7 +152,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A02E2F1B21825AB200068C37 /* Build configuration list for PBXProject "Test2" */;
+			buildConfigurationList = A02E2F1B21825AB200068C37 /* Build configuration list for PBXProject "ImageDownloader" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -159,7 +165,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A02E2F1F21825AB200068C37 /* Test2 */,
+				A02E2F1F21825AB200068C37 /* ImageDownloader */,
 			);
 		};
 /* End PBXProject section */
@@ -187,7 +193,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Test2/Pods-Test2-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-ImageDownloader/Pods-ImageDownloader-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyPlistManager/SwiftyPlistManager.framework",
@@ -204,7 +210,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Test2/Pods-Test2-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ImageDownloader/Pods-ImageDownloader-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BACFF5DD9D5706864E4863DD /* [CP] Check Pods Manifest.lock */ = {
@@ -222,7 +228,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Test2-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ImageDownloader-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -387,7 +393,7 @@
 		};
 		A02E2F3321825AB300068C37 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC4CC555013A3DE85987CEA3 /* Pods-Test2.debug.xcconfig */;
+			baseConfigurationReference = EF2A05E5F0B95E8C061F2B5D /* Pods-ImageDownloader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -398,12 +404,12 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
-				INFOPLIST_FILE = Test2/Info.plist;
+				INFOPLIST_FILE = ImageDownloader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.maxshapiro32.Test2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.maxshapiro32.ImageDownloader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -412,7 +418,7 @@
 		};
 		A02E2F3421825AB300068C37 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3DB7156B1ED33C9C9AC2AFE6 /* Pods-Test2.release.xcconfig */;
+			baseConfigurationReference = 0E2852609D0040E74D011590 /* Pods-ImageDownloader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -423,12 +429,12 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
-				INFOPLIST_FILE = Test2/Info.plist;
+				INFOPLIST_FILE = ImageDownloader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.maxshapiro32.Test2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.maxshapiro32.ImageDownloader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -438,7 +444,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A02E2F1B21825AB200068C37 /* Build configuration list for PBXProject "Test2" */ = {
+		A02E2F1B21825AB200068C37 /* Build configuration list for PBXProject "ImageDownloader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A02E2F3021825AB300068C37 /* Debug */,
@@ -447,7 +453,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A02E2F3221825AB300068C37 /* Build configuration list for PBXNativeTarget "Test2" */ = {
+		A02E2F3221825AB300068C37 /* Build configuration list for PBXNativeTarget "ImageDownloader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A02E2F3321825AB300068C37 /* Debug */,
