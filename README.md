@@ -2,7 +2,7 @@
 [![Platform](https://img.shields.io/badge/platform-ios_swift-lightgrey.svg?style=flat)](https://developer.apple.com/swift/)
 
 # Image Downloader
-In this Code Pattern, we will look at comparing downloading Atlantic Hurricane Season images from a traditional server ([Wikipedia](https://en.wikipedia.org/wiki/Atlantic_hurricane_season ) in this case) and [Cloud Object Storage](https://www.ibm.com/cloud/object-storage) on an iPhone.
+In this Code Pattern, we will look at comparing downloading Atlantic Hurricane Season images from a traditional server ([Wikipedia](https://en.wikipedia.org/wiki/Atlantic_hurricane_season ) in this case) and [Cloud Object Storage](https://www.ibm.com/cloud/object-storage) on an iPhone. The images are stored in Cloud Object Storage as objects in one Bucket and a Zip archive in another Bucket. 
 
 When the reader has completed this Code Pattern, they will understand how to:
 
