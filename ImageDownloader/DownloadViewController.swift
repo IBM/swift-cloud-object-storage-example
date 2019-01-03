@@ -1,6 +1,6 @@
 //
 //  DownloadViewController.swift
-//  Test2
+//  ImageDownloader
 //
 //  Created by Max Shapiro on 12/19/18.
 //  Copyright © 2018 Max Shapiro. All rights reserved.
@@ -8,17 +8,13 @@
 
 import Foundation
 import UIKit
-import Alamofire
-import Kanna
-import ZIPFoundation
 import SwiftyPlistManager
 
 class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    var images:[(String,UIImage)] = []
+    var images:[(String,UIImage)] = [] // (Year,Image)
     var totalImages = 0
     
-    var currentWorkingPath = ""
     let downloadTypes = ["URL", "COS", "COS ZIP"]
     let downloadPickerViewOptions = ["Traditional Server (Wikipedia URLs)", "Cloud Object Storage (Images)", "Cloud Object Storage (ZIP Archive)"]
     var currentDownloadType = "URL"
@@ -72,6 +68,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         cosZipBucket = SwiftyPlistManager.shared.fetchValue(for: "cosZipBucket", fromPlistWithName: "Data") as! String
     }
     
+    // Sends images and download time to ImageViewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let imageViewController = segue.destination as? ImageViewController {
@@ -108,7 +105,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         currentDownloadType = downloadTypes[row]
     }
     
-    //Starts download of images
+    // Starts download of images
     @IBAction func startDownload(_ sender: Any) {
         clear()
         startButton.isEnabled = false
@@ -134,17 +131,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         time = 0
         updateTimerUI()
         
-        let fileManager = FileManager()
-        
-        if currentWorkingPath != "" {
-            do {
-                try fileManager.removeItem(atPath: currentWorkingPath)
-            } catch {
-                print("Error removing directory")
-            }
-        }
-        
-        currentWorkingPath = ""
+        _ = APICalls.getCleanFileURL()
     }
 
     // Gets Images on Wikipedia
@@ -192,7 +179,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         }
     }
     
-    // Gets all objects (images) in COS bucket
+    // Gets all objects (images) in Cloud Object Storage bucket
     func getCOSImages() {
         let alamoGroup = DispatchGroup()
         alamoGroup.enter()
@@ -242,7 +229,7 @@ class DownloadViewController: UIViewController, UIPickerViewDataSource, UIPicker
         }
     }
     
-    // Downloads Zip file from COS bucket and decompresses file to get Images
+    // Gets Zip file from Cloud Object Storage bucket
     func getCOSZip() {
         let alamoGroup = DispatchGroup()
         alamoGroup.enter()

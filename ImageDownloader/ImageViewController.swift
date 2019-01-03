@@ -1,6 +1,6 @@
 //
 //  ImageViewController.swift
-//  Test2
+//  ImageDownloader
 //
 //  Created by Max Shapiro on 12/19/18.
 //  Copyright © 2018 Max Shapiro. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Test2
+//  ImageDownloader
 //
 //  Created by Max Shapiro on 10/25/18.
 //  Copyright © 2018 Max Shapiro. All rights reserved.

@@ -24,8 +24,6 @@
 
 /* Begin PBXFileReference section */
 		0E2852609D0040E74D011590 /* Pods-ImageDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageDownloader.release.xcconfig"; path = "Pods/Target Support Files/Pods-ImageDownloader/Pods-ImageDownloader.release.xcconfig"; sourceTree = "<group>"; };
-		2AFB0B01FB4AC57E254D30E5 /* Pods_Test2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Test2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3DB7156B1ED33C9C9AC2AFE6 /* Pods-Test2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test2.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test2/Pods-Test2.release.xcconfig"; sourceTree = "<group>"; };
 		A002DC6421BB03BB0067160D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A02E2F2021825AB200068C37 /* ImageDownloader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageDownloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A02E2F2821825AB200068C37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -41,7 +39,6 @@
 		A0C8D2AC21CD6A2C0035EAC9 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		A0C8D2B021CD77460035EAC9 /* ResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableViewCell.swift; sourceTree = "<group>"; };
 		AFD6CA4A27895BB953C1ECD2 /* Pods_ImageDownloader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageDownloader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EC4CC555013A3DE85987CEA3 /* Pods-Test2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test2/Pods-Test2.debug.xcconfig"; sourceTree = "<group>"; };
 		EF2A05E5F0B95E8C061F2B5D /* Pods-ImageDownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageDownloader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImageDownloader/Pods-ImageDownloader.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,8 +57,6 @@
 		3376CFD218A2C806DBBBA297 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				EC4CC555013A3DE85987CEA3 /* Pods-Test2.debug.xcconfig */,
-				3DB7156B1ED33C9C9AC2AFE6 /* Pods-Test2.release.xcconfig */,
 				EF2A05E5F0B95E8C061F2B5D /* Pods-ImageDownloader.debug.xcconfig */,
 				0E2852609D0040E74D011590 /* Pods-ImageDownloader.release.xcconfig */,
 			);
@@ -109,7 +104,6 @@
 		A02E2F3721825EA600068C37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2AFB0B01FB4AC57E254D30E5 /* Pods_Test2.framework */,
 				AFD6CA4A27895BB953C1ECD2 /* Pods_ImageDownloader.framework */,
 			);
 			name = Frameworks;

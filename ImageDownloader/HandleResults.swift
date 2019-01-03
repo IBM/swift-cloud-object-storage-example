@@ -1,6 +1,6 @@
 //
 //  HandleResults.swift
-//  Test2
+//  ImageDownloader
 //
 //  Created by Max Shapiro on 12/21/18.
 //  Copyright © 2018 Max Shapiro. All rights reserved.
@@ -10,6 +10,7 @@ import Foundation
 
 class HandleResults {
     
+    // Logs data for a download run
     static func writeData(fileURL: URL, time: Int, type: String) {
 
         let seconds: Int = (time/100)
@@ -34,6 +35,7 @@ class HandleResults {
         }
     }
     
+    // Reads and returns log of download runs
     static func readData(fileURL: URL, completion: @escaping (_ results: [[String]]) -> Void) {
         
         var results: [[String]] = []
@@ -53,6 +55,7 @@ class HandleResults {
         catch {}
     }
     
+    // Deletes log data
     static func deleteData(fileURL: URL) {
         do {
             let fileManager = FileManager()

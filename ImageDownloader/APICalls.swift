@@ -1,6 +1,6 @@
 //
 //  APICalls.swift
-//  Test2
+//  ImageDownloader
 //
 //  Created by Max Shapiro on 12/20/18.
 //  Copyright © 2018 Max Shapiro. All rights reserved.
@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Alamofire
 import Kanna
+import ZIPFoundation
 
 class APICalls {
     
@@ -44,7 +45,7 @@ class APICalls {
         }
     }
     
-    // Get a list of Objects in a COS Bucket
+    // Gets a list of Objects in a Cloud Object Storage Bucket
     static func getCOSBucketObjects(url: String, headers: [String:String], completion: @escaping (_ html: XPathObject) -> Void) {
         Alamofire.request(url, method: .get, headers: headers).responseString(queue: nil, encoding: .utf8) { response in
             let html = response.result.value
@@ -56,7 +57,7 @@ class APICalls {
         }
     }
     
-    // Gets access token needed for interacting with COS
+    // Gets access token needed for interacting with Cloud Object Storage
     static func getAccessToken(apikey: String, completion: @escaping (_ accessToken: String) -> Void) {
         let url = "https://iam.bluemix.net/oidc/token"
         let parameters = ["apikey": apikey,
@@ -76,7 +77,7 @@ class APICalls {
         }
     }
     
-    // Downloads Zip file from COS bucket and decompresses file to get Images
+    // Downloads Zip file from Cloud Object Storage bucket and decompresses file to get Images
     static func getCOSZip(url: String, headers: [String:String], downloadProgress: @escaping (_ progress: Float) -> Void, completion: @escaping (_ images: [String:UIImage]) -> Void) {
         
         let fileURL: URL = getCleanFileURL()
