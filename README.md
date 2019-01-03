@@ -74,7 +74,7 @@ $ pod update
 $ pod install
 ```
 
-Finally, open the Xcode workspace: `Test2.xcworkspace`.
+Finally, open the Xcode workspace: `ImageDownloader.xcworkspace`.
 
 ## 4. Create Cloud Object Storage Buckets
 
@@ -82,7 +82,7 @@ Finally, open the Xcode workspace: `Test2.xcworkspace`.
 2. Upload the images in `atlantic_hurricane_seasons/images` to a Bucket. 
 3. Run `./zip_hurricane_images.sh` in `atlantic_hurrincane_seasons/zip` to create the zip file. Then upload the zip file to a different Bucket.
 4. Follow these [instructions](https://console.bluemix.net/docs/services/cloud-object-storage/cli/curl.html#request-an-iam-token-using-an-api-key) for obtaining an API key and `ibm-service-instance-id`
-5. Include the public endpoint, Bucket names, API key, and `ibm-service-instance-id` in `Test2/Data.plist`
+5. Include the public endpoint, Bucket names, API key, and `ibm-service-instance-id` in `ImageDownloader/Data.plist`
 
 ## 5. Run in Xcode
 
